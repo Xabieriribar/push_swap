@@ -10,7 +10,6 @@
 #endif
 
 bool    ft_parse_input(int argc, char **argv, int **numbers);
-int	ft_strncmp(const char *s1, const char *s2, size_t n);
 char	*ft_strchr(const char *s, int c);
 int	ft_atoi(const char *nptr);
 #endif
