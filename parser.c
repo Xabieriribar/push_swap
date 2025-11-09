@@ -1,33 +1,35 @@
 #include "push_swap.h"
 
-bool    ft_parse_input(int argc, char **argv, t_nums *nums)
+bool    ft_parse_input(int argc, char **argv, int **numbers)
 {
-    char **argv_p;
     int  index;
+    int  jndex;
 
 
     if (argc == 1)
         return (false);
-    argv_p = argv;
-    *argv++;
-    while (**argv)
+    *numbers = malloc(sizeof(int) * (argc - 1));
+    if (!*numbers)
+        return (false);
+    index = 1;
+    while (argv[index])
     {
-        nums->nums = ft_atoi(*argv);
-        if (!nums->nums);
+        (*numbers)[index - 1] = ft_atoi(argv[index]);
+        if (!(*numbers)[index - 1])
             return (false);
-        *argv++;
+        index++;
     }
-    index = 0;
-    while (*argv_p[index]) 
+    index = 1;
+    while ((*numbers)[index - 1]) 
     {
-        index = *argv_p;
-        while (*argv_p[index])
+        jndex = index + 1;
+        while ((*numbers)[jndex])
         {
-            if (ft_strchr(*argv_p, *argv_p[index]))
+            if ((*numbers)[index] == (*numbers)[jndex])
                 return (false);
-            
+            jndex++;
         }
-        *argv_p++;
+        index++;
     }
-    return (true)
+    return (true);
 }
