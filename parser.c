@@ -1,10 +1,13 @@
 #include "push_swap.h"
 
-bool ft_is_number(int argc, char **argv, int **numbers)
+bool ft_is_number(int argc, char **argv, int **numbers, int mode)
 {
     int index;
 
-    index = 1;
+    if (mode)
+        index = 0;
+    else
+        index = 1;
     *numbers = malloc(sizeof(int) * (argc - 1));
     if (!*numbers)
         return (false);
@@ -40,7 +43,15 @@ bool    ft_is_duplicate(int **numbers)
 
 bool    ft_parse_input(int argc, char **argv, int **numbers)
 {
-    if (argc <= 2 || !ft_is_number(argc, argv, numbers) || !ft_is_duplicate(numbers))
+    int mode;
+    
+    mode = 0;
+    if (argc == 2)
+    {
+        argv = ft_split(argv[1], ' ');
+        mode = 1;
+    }
+    if (argc == 1 || !ft_is_number(argc, argv, numbers, mode) || !ft_is_duplicate(numbers))
         return (false);
     return (true);
 }

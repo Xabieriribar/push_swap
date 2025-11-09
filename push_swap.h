@@ -9,8 +9,25 @@
 #define MAX_SIZE 10000
 #endif
 
+typedef struct s_list_a
+{
+    int number;
+    int index;
+    struct s_list_a *next;
+    struct s_list_a *prev;
+} t_list_a;
+
+typedef struct s_list_b
+{
+    int number;
+    int index;
+    struct s_list_a *next;
+    struct s_list_a *prev;
+} t_list_b;
+
 bool    ft_parse_input(int argc, char **argv, int **numbers);
 char	*ft_strchr(const char *s, int c);
+char	**ft_split(char const *s, char c);
 int	ft_atoi(const char *nptr);
 #endif
 
