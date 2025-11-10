@@ -27,11 +27,14 @@ typedef struct s_list_b
 } t_list_b;
 
 bool    ft_parse_input(int argc, char **argv, int **numbers);
-void    make_list(t_list_a **list, int *numbers);
+void    make_list(t_list_a **list, int *numbers, size_t *lstsize, int argc);
 int	ft_strncmp(const char *s1, const char *s2, size_t n);
 char	*ft_strchr(const char *s, int c);
 char	*ft_strchr(const char *s, int c);
+bool    ft_is_sorted(t_list_a *list);
 char	**ft_split(char const *s, char c);
 int	ft_atoi(const char *nptr);
+//OPERATIONS
+void    sa(t_list_a **list);
 #endif
 

@@ -52,14 +52,14 @@ void add_node(t_list_a **list, t_list_a *node)
     node->prev = last;
 }
 
-void    ft_fill_list(t_list_a **list, int *numbers)
+void    ft_fill_list(t_list_a **list, int *numbers, int argc)
 {
     int index;
     t_list_a *node;
 
     index = 0;
     node = NULL;
-    while (numbers[index])
+    while (index < argc - 1)
     {
         node = ft_lstnew(numbers[index], index);
         add_node(list, node);
@@ -67,7 +67,21 @@ void    ft_fill_list(t_list_a **list, int *numbers)
     }
 }
 
-void    make_list(t_list_a **list, int *numbers)
+size_t ft_lstsize(t_list_a *list)
 {
-    ft_fill_list(list, numbers);
+    size_t  len;
+
+    len = 0;
+    while (list)
+    {
+        len++;
+        list = list->next;
+    }
+    return (len);
+}
+
+void    make_list(t_list_a **list, int *numbers, size_t *lstsize, int argc)
+{
+    ft_fill_list(list, numbers, argc);
+    *lstsize = ft_lstsize(*list);
 }

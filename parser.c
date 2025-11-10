@@ -51,7 +51,7 @@ bool    ft_int_overflow(char **argv)
     int index;
 
     index = 0;
-    while ((*argv)[index])
+    while (argv[index])
     {
         if (ft_strncmp(argv[index], "2147483647", 0) || ft_strncmp(argv[index], "-2147483648", 0))
             return (false);
