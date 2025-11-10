@@ -14,9 +14,9 @@
 
 int	ft_atoi(const char *nptr)
 {
-	int	integer;
-	int	counter;
-	int	sign;	
+	long integer;
+	long counter;
+	long sign;	
 
 	sign = 1;
 	counter = 0;
@@ -38,5 +38,7 @@ int	ft_atoi(const char *nptr)
 		integer += (*nptr - '0');
 		nptr++;
 	}
+	if (integer < INT_MIN || integer > INT_MAX)
+		return (0);
 	return (integer * sign);
 }

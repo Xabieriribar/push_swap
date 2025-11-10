@@ -14,7 +14,10 @@ int main(int argc, char **argv)
     while (list != NULL)
     {
         printf("%d", list->number);
+        printf("\n");
         list = list->next;
     }
-    printf("True");
+    // printf("%d\n", INT_MAX);
+    // printf("%d\n", INT_MIN);
+    return (0);
 }

@@ -61,7 +61,7 @@ void    ft_fill_list(t_list_a **list, int *numbers)
     node = NULL;
     while (numbers[index])
     {
-        node = ft_lstnew(*numbers, index);
+        node = ft_lstnew(numbers[index], index);
         add_node(list, node);
         index++;
     }

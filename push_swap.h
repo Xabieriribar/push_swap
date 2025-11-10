@@ -3,6 +3,7 @@
 
 #include <stdbool.h>
 #include <stdlib.h>
+#include <limits.h>
 #include "stdio.h"
 
 #ifndef MAX_SIZE
@@ -27,7 +28,8 @@ typedef struct s_list_b
 
 bool    ft_parse_input(int argc, char **argv, int **numbers);
 void    make_list(t_list_a **list, int *numbers);
-int	ft_isdigit(int c);
+int	ft_strncmp(const char *s1, const char *s2, size_t n);
+char	*ft_strchr(const char *s, int c);
 char	*ft_strchr(const char *s, int c);
 char	**ft_split(char const *s, char c);
 int	ft_atoi(const char *nptr);
