@@ -46,7 +46,7 @@ bool    ft_parse_input(int argc, char **argv, int **numbers)
     int mode;
     
     mode = 0;
-    if (argc == 2)
+    if (argc == 2 && !ft_isdigit(*argv[1]))
     {
         argv = ft_split(argv[1], ' ');
         mode = 1;

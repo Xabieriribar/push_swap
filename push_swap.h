@@ -26,6 +26,8 @@ typedef struct s_list_b
 } t_list_b;
 
 bool    ft_parse_input(int argc, char **argv, int **numbers);
+void    make_list(t_list_a **list, int *numbers);
+int	ft_isdigit(int c);
 char	*ft_strchr(const char *s, int c);
 char	**ft_split(char const *s, char c);
 int	ft_atoi(const char *nptr);
