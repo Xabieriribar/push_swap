@@ -22,7 +22,7 @@ void    sa(t_list_a **list)
     temp_index = (*list)->index;
     (*list)->number = (*list)->next->number;
     (*list)->index = (*list)->next->index;
-    (*list)->next->number = temp_number;
+    (*list)->next->numbera= temp_number;
     (*list)->next->index = temp_index;
 }
 
@@ -39,13 +39,13 @@ void    rra(t_list_a **list)
 
 void    ra(t_list_a **list)
 {
-    t_list_a    **last;
+    t_list_a *first;
 
-    last = list;
-    *last = ft_lstlast(*list);
-    (*last)->next = (*list)->next;
-    (*list)->prev = (*last)->prev;
-    (*last)->prev->next = (*list);
-    (*last)->prev = NULL;
+    first = (*list);
+    *list = ft_lstlast(*list);
+    first->next = (*list)->next;
+    (*list)->prev = last->prev;
+    last->prev->next = (*list);
+    last->prev = NULL;
     (*list)->next = NULL;
 }

@@ -49,7 +49,7 @@ void    put_biggest_in_bottom(t_list_a **list)
 }
 void    sort_three(t_list_a **list)
 {
-    t_list_a    *last;
+    t_list_a *last;
 
     last = ft_lstlast(*list);
     if (last_is_biggest(*list, last) && swap_two(list))
