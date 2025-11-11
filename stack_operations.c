@@ -39,12 +39,13 @@ void    rra(t_list_a **list)
 
 void    ra(t_list_a **list)
 {
-    t_list_a    *last;
+    t_list_a    **last;
 
-    last = ft_lstlast(*list);
-    last->next = (*list)->next;
-    (*list)->prev = last->prev;
-    last->prev->next = (*list);
-    last->prev = NULL;
+    last = list;
+    *last = ft_lstlast(*list);
+    (*last)->next = (*list)->next;
+    (*list)->prev = (*last)->prev;
+    (*last)->prev->next = (*list);
+    (*last)->prev = NULL;
     (*list)->next = NULL;
 }
