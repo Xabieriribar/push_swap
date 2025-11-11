@@ -17,12 +17,9 @@ int main(int argc, char **argv)
     {
         printf("%zu\n", lstsize);
         if (lstsize == 2)
-            sa(&list);
-        // if (lstsize == 3)
-        // {
-        //     sort_three(list);
-        //     return (0);
-        // }
+            sort_two(&list);
+        if (lstsize == 3)
+            sort_three(&list);
         while (list != NULL)
         {
             printf("%d", list->number);

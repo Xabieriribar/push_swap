@@ -34,7 +34,16 @@ char	*ft_strchr(const char *s, int c);
 bool    ft_is_sorted(t_list_a *list);
 char	**ft_split(char const *s, char c);
 int	ft_atoi(const char *nptr);
+//LISTS
+t_list_a *ft_lstlast(t_list_a *list);
+
+//SORTS
+
+void    sort_three(t_list_a **list);
 //OPERATIONS
 void    sa(t_list_a **list);
+void    rra(t_list_a **list);
+void    ra(t_list_a **list);
+void    sort_two(t_list_a **list);
 #endif
 
