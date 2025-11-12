@@ -80,8 +80,8 @@ size_t ft_lstsize(t_list_a *list)
     return (len);
 }
 
-void    make_list(t_list_a **list, int *numbers, size_t *lstsize, int argc)
+void    make_list(t_list_a **list, int *numbers, size_t *lstsize, int *argc)
 {
-    ft_fill_list(list, numbers, argc);
+    ft_fill_list(list, numbers, *argc);
     *lstsize = ft_lstsize(*list);
 }

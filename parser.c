@@ -1,6 +1,6 @@
 #include "push_swap.h"
 
-bool ft_is_number(int argc, char **argv, int **numbers, int mode)
+bool ft_is_number(int *argc, char **argv, int **numbers, int mode)
 {
     int index;
     int j;
@@ -10,9 +10,9 @@ bool ft_is_number(int argc, char **argv, int **numbers, int mode)
     if (mode)
     {
         index = 0;
-        argc += 1;
+        *argc += 1;
     }
-    *numbers = malloc(sizeof(int) * (argc - 1));
+    *numbers = malloc(sizeof(int) * (*argc - 1));
     if (!*numbers)
         return (false);
     while (argv[index])
@@ -48,29 +48,31 @@ bool    ft_is_duplicate(int **numbers)
 
 bool    ft_int_overflow(char **argv)
 {
-    int index;
+    // int index;
 
-    index = 0;
-    while (argv[index])
-    {
-        if (ft_strncmp(argv[index], "2147483647", 0) || ft_strncmp(argv[index], "-2147483648", 0))
-            return (false);
-        index++;
-    }
+    // index = 0;
+    // while (argv[index])
+    // {
+    //     if (ft_strncmp(argv[index], "2147483647", 0) || ft_strncmp(argv[index], "-2147483648", 0))
+    //         return (false);
+    //     index++;
+    // }
+    if (argv)
+        return (true);
     return (true);
 }
 
-bool    ft_parse_input(int argc, char **argv, int **numbers)
+bool    ft_parse_input(int *argc, char **argv, int **numbers)
 {
     int mode;
     
     mode = 0;
-    if (argc == 2 && ft_strchr(argv[1], ' '))
+    if (*argc == 2 && ft_strchr(argv[1], ' '))
     {
         argv = ft_split(argv[1], ' ');
         mode = 1;
     }
-    if (argc == 1 || !ft_int_overflow(argv) || !ft_is_number(argc, argv, numbers, mode) || !ft_is_duplicate(numbers))
+    if (*argc == 1 || !ft_int_overflow(argv) || !ft_is_number(argc, argv, numbers, mode) || !ft_is_duplicate(numbers))
         return (false);
     return (true);
 }

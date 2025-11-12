@@ -18,8 +18,8 @@ typedef struct s_list_a
     struct s_list_a *prev;
 } t_list_a;
 
-bool    ft_parse_input(int argc, char **argv, int **numbers);
-void    make_list(t_list_a **list, int *numbers, size_t *lstsize, int argc);
+bool    ft_parse_input(int *argc, char **argv, int **numbers);
+void    make_list(t_list_a **list, int *numbers, size_t *lstsize, int *argc);
 int	ft_strncmp(const char *s1, const char *s2, size_t n);
 char	*ft_strchr(const char *s, int c);
 char	*ft_strchr(const char *s, int c);

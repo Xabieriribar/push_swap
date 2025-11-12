@@ -7,12 +7,12 @@ int main(int argc, char **argv)
 
     list = NULL;
     lstsize = 0;
-    if (!ft_parse_input(argc, argv, &numbers))
+    if (!ft_parse_input(&argc, argv, &numbers))
     {
         printf("False");
         return (false);
     }
-    make_list(&list, numbers, &lstsize, argc);
+    make_list(&list, numbers, &lstsize, &argc);
     if (!ft_is_sorted(list))
     {
         printf("%zu\n", lstsize);
