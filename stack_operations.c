@@ -55,12 +55,13 @@ void    rra(t_list_a **list)
 }
 void    ra(t_list_a **list)
 {
-    int first_number;
-    t_list_a *last;
+    t_list_a *first_temp;
+    t_list_a *last_temp;
 
-    first_number = (*list)->number;
-    last = ft_lstlast(*list);
-    (*list)->number = last->number;
-    last->number = first_number;
+    first_temp = (*list);
+    last_temp = ft_lstlast(*list);
+    *list = (*list)->next;
+    last_temp->next = first_temp;
+    first_temp->next = NULL;
     ft_printf("ra\n");
 }
