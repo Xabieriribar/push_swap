@@ -1,9 +1,8 @@
 #include "push_swap.h"
 
-void    sort_two(t_list_a **list, t_operations *operations)
+void    sort_two(t_list_a **list)
 {
-    operations->index++;
-    sa(list, operations);
+    sa(list);
 }
 
 bool    last_is_biggest(t_list_a *list, t_list_a *last)
@@ -17,11 +16,11 @@ bool    last_is_biggest(t_list_a *list, t_list_a *last)
     return (true);
 }
 
-bool    swap_two(t_list_a **list, t_operations *operations)
+bool    swap_two(t_list_a **list)
 {
     if ((*list)->number > (*list)->next->number)
     {
-        sa(list, operations);
+        sa(list);
         return (true);
     }
     return (false);
@@ -45,37 +44,34 @@ void    find_biggest_index(t_list_a *list, int *index)
         list = list->next;
     }
 }
-void    put_biggest_in_bottom(t_list_a **list, t_operations *operation)
+void    put_biggest_in_bottom(t_list_a **list)
 {
     int index;
-    
+
     index = 0;
     find_biggest_index(*list, &index);
     if (index == 1)
     {
-        rra(list, operation);
-        operation->index++;
+        rra(list);
     }
     else
     {
-        ra(list, operation);
-        operation->index++;
-        sa(list, operation);
-        operation->index++;
+        ra(list);
+        sa(list);
     }
 
 }
-void    sort_three(t_list_a **list, t_operations *operations)
+void    sort_three(t_list_a **list)
 {
     t_list_a *last;
 
     last = ft_lstlast(*list);
-    if (last_is_biggest(*list, last) && swap_two(list, operations))
+    if (last_is_biggest(*list, last) && swap_two(list))
         return ;
     else
     {
-        put_biggest_in_bottom(list, operations);
+        put_biggest_in_bottom(list);
         if (!ft_is_sorted(*list))
-            sa(list, operations);
+            sa(list);
     }
 }

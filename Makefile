@@ -9,7 +9,7 @@ OBJS    := $(SRCS:.c=.o)
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	@cd libft ; make
+	@cd libft && make
 	$(CC) $(FLAGS) $(OBJS) libft/libft.a -o $(NAME)
 
 %.o: %.c push_swap.h
