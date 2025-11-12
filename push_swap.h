@@ -18,13 +18,11 @@ typedef struct s_list_a
     struct s_list_a *prev;
 } t_list_a;
 
-typedef struct s_list_b
+typedef struct s_operations
 {
-    int number;
+    char *operation_list[3];
     int index;
-    struct s_list_a *next;
-    struct s_list_a *prev;
-} t_list_b;
+} t_operations;
 
 bool    ft_parse_input(int argc, char **argv, int **numbers);
 void    make_list(t_list_a **list, int *numbers, size_t *lstsize, int argc);
@@ -39,11 +37,11 @@ t_list_a *ft_lstlast(t_list_a *list);
 
 //SORTS
 
-void    sort_three(t_list_a **list);
+void    sort_three(t_list_a **list, t_operations *operations);
 //OPERATIONS
-void    sa(t_list_a **list);
-void    rra(t_list_a **list);
-void    ra(t_list_a **list);
-void    sort_two(t_list_a **list);
+void    sa(t_list_a **list, t_operations *operations);
+void    rra(t_list_a **list, t_operations *operations);
+void    ra(t_list_a **list, t_operations *operations);
+void    sort_two(t_list_a **list, t_operations *operations);
 #endif
 

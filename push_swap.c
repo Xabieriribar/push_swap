@@ -2,10 +2,16 @@
 int main(int argc, char **argv)
 {
     int *numbers;
+    t_operations *operations;
     t_list_a    *list;
     size_t lstsize;
+    int index = 0;
 
     list = NULL;
+    operations = malloc(sizeof(struct s_operations));
+    if (!operations)
+        return (0);
+    operations->index = 0;
     lstsize = 0;
     if (!ft_parse_input(argc, argv, &numbers))
     {
@@ -17,9 +23,11 @@ int main(int argc, char **argv)
     {
         printf("%zu\n", lstsize);
         if (lstsize == 2)
-            sort_two(&list);
+            sort_two(&list, operations);
         if (lstsize == 3)
-            sort_three(&list);
+            sort_three(&list, operations);
+        while (operations->operation_list[index] != NULL)
+            printf("%s\n", operations->operation_list[index++]);
         while (list != NULL)
         {
             printf("%d", list->number);

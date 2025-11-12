@@ -11,7 +11,7 @@ bool    ft_is_sorted(t_list_a *list)
     return (true);
 }
 
-void    sa(t_list_a **list)
+void    sa(t_list_a **list, t_operations *operations)
 {
     int temp_number;
     int temp_index;
@@ -22,30 +22,45 @@ void    sa(t_list_a **list)
     temp_index = (*list)->index;
     (*list)->number = (*list)->next->number;
     (*list)->index = (*list)->next->index;
-    (*list)->next->numbera= temp_number;
+    (*list)->next->number= temp_number;
     (*list)->next->index = temp_index;
+    operations->operation_list[operations->index] = "sa";
 }
 
-void    rra(t_list_a **list)
+void    rra(t_list_a **list, t_operations *operation)
 {
-    t_list_a    *last;
+    int temp_n;
+    int first_n;
+    int temp_next;
+    t_list_a *last;
+    t_list_a *temp;
 
     last = ft_lstlast(*list);
-    last->prev->next = NULL;
-    last->next = (*list)->next;
-    last->prev = NULL;
-    *list = last;
+    first_n = (*list)->number;
+    temp = *list;
+    while (temp ->next->next != NULL)
+    {
+        if (temp->number == first_n)
+        {
+            temp_n = temp->number;
+            temp->number = last->number;
+            continue;
+        }
+        temp_next = temp->next->number;
+        temp->next->number = temp_n;
+        temp->next->next->number = temp_next;
+        temp = temp->next;
+    }
+    operation->operation_list[operation->index]= "rra";
 }
-
-void    ra(t_list_a **list)
+void    ra(t_list_a **list, t_operations *operations)
 {
-    t_list_a *first;
+    int first_number;
+    t_list_a *last;
 
-    first = (*list);
-    *list = ft_lstlast(*list);
-    first->next = (*list)->next;
-    (*list)->prev = last->prev;
-    last->prev->next = (*list);
-    last->prev = NULL;
-    (*list)->next = NULL;
+    first_number = (*list)->number;
+    last = ft_lstlast(*list);
+    (*list)->number = last->number;
+    last->number = first_number;
+    operations->operation_list[operations->index] = "ra";
 }
