@@ -39,11 +39,12 @@ size_t ft_lstsize(t_list_a *list);
 //SORTS
 void    sort_two(t_list_a **list);
 void    sort_three(t_list_a **list);
-void    sort_turks (t_list_a **list_a, t_list_a **list_b);
+void    sort_turks(t_list_a **list_a, t_list_a **list_b);
 //OPERATIONS
 void    sa(t_list_a **list);
 void    rra(t_list_a **list);
 void    ra(t_list_a **list);
-void    pb(t_list_a **list);
+void    pb(t_list_a **list_a, t_list_a **list_b);
+
 #endif
 

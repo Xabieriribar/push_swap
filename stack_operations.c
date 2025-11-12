@@ -13,13 +13,22 @@ bool    ft_is_sorted(t_list_a *list)
 
 /*This function adds element to the b stack, starting from the bottom
 and adding them always at the top*/
-void    pb(t_list_a **list)
+void    pb(t_list_a **list_a, t_list_a **list_b)
 {
-    t_list_a *new_node;
-    
-    new_node = ft_lstnew((*list)->number, int index)
-
-
+    if (*list_b == NULL)
+    {
+        *list_b = *list_a;
+        (*list_b)->next = NULL;
+        (*list_b)->prev = NULL;
+    }
+    else
+    {
+        (*list_b)->next = (*list_b);
+        (*list_b) = *list_a;
+    }
+    (*list_a) = (*list_a)->next;
+    (*list_a)->prev = NULL;
+    printf("pb\n");
 }
 void    sa(t_list_a **list)
 {

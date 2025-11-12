@@ -77,7 +77,21 @@ void    sort_three(t_list_a **list)
     }
 }
 
-void    sort_turk(t_list_a **list)
+void    sort_turks(t_list_a **list_a, t_list_a **list_b)
 {
-    pa()
+    t_list_a *temp;
+    temp = *list_a;
+    while (temp->next != NULL && ft_lstsize(*list_a) > 3)
+    {
+        pb(list_a, list_b);
+        printf("\n");
+        temp = temp->next;
+    }
+    temp = *list_b;
+    while(temp->next != NULL)
+    {
+        printf("%d", temp->number);
+        printf("\n");
+        temp = temp->next;
+    }
 }
