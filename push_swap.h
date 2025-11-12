@@ -18,8 +18,14 @@ typedef struct s_list_a
     struct s_list_a *prev;
 } t_list_a;
 
-bool    ft_parse_input(int *argc, char **argv, int **numbers);
-void    make_list(t_list_a **list, int *numbers, size_t *lstsize, int *argc);
+typedef struct s_data
+{
+    int argc;
+    char **argv;
+    int mode;
+} t_data;
+bool    ft_parse_input(t_data *data, int **numbers);
+void    make_list(t_list_a **list, int *numbers, int argc);
 int	ft_strncmp(const char *s1, const char *s2, size_t n);
 char	*ft_strchr(const char *s, int c);
 char	*ft_strchr(const char *s, int c);
@@ -29,14 +35,15 @@ int	ft_atoi(const char *nptr);
 int	ft_printf(const char *format, ...);
 //LISTS
 t_list_a *ft_lstlast(t_list_a *list);
-
+size_t ft_lstsize(t_list_a *list);
 //SORTS
 void    sort_two(t_list_a **list);
 void    sort_three(t_list_a **list);
-void    sort_turks (t_list_a **list);
+void    sort_turks (t_list_a **list_a, t_list_a **list_b);
 //OPERATIONS
 void    sa(t_list_a **list);
 void    rra(t_list_a **list);
 void    ra(t_list_a **list);
+void    pb(t_list_a **list);
 #endif
 

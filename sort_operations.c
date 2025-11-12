@@ -57,7 +57,8 @@ void    put_biggest_in_bottom(t_list_a **list)
     else
     {
         ra(list);
-        sa(list);
+        if (!ft_is_sorted(*list))
+            sa(list);
     }
 
 }
@@ -74,4 +75,9 @@ void    sort_three(t_list_a **list)
         if (!ft_is_sorted(*list))
             sa(list);
     }
+}
+
+void    sort_turk(t_list_a **list)
+{
+    pa()
 }

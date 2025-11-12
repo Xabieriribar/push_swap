@@ -11,6 +11,16 @@ bool    ft_is_sorted(t_list_a *list)
     return (true);
 }
 
+/*This function adds element to the b stack, starting from the bottom
+and adding them always at the top*/
+void    pb(t_list_a **list)
+{
+    t_list_a *new_node;
+    
+    new_node = ft_lstnew((*list)->number, int index)
+
+
+}
 void    sa(t_list_a **list)
 {
     int temp_number;
