@@ -10,6 +10,10 @@
 #define MAX_SIZE 10000
 #endif
 
+//MACROS FOR TARGET_NODE
+#ifndef NEXT_BIGGEST
+#define NEXT_BIGGEST 1
+#endif
 typedef struct s_list_a
 {
     int number;
@@ -41,6 +45,13 @@ t_list_a *ft_lstnew(int number, int index);
 void    sort_two(t_list_a **list);
 void    sort_three(t_list_a **list);
 void    sort_turks(t_list_a **list_a, t_list_a **list_b);
+//SORT UTILS
+bool    last_is_biggest(t_list_a *list, t_list_a *last);
+void    put_biggest_in_bottom(t_list_a **list);
+bool    swap_two(t_list_a **list);
+//TURK UTILS
+void    update_indexes(t_list_a **list_a, t_list_a **list_b);
+t_list_a *get_target_node(t_list_a *list_a, t_list_a *source_node, int to_find);
 //OPERATIONS
 void    sa(t_list_a **list);
 void    rra(t_list_a **list);
