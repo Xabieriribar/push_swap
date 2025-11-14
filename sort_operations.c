@@ -79,19 +79,22 @@ void    sort_three(t_list_a **list)
 
 void    sort_turks(t_list_a **list_a, t_list_a **list_b)
 {
-    t_list_a *temp;
-    temp = *list_a;
-    while (temp->next != NULL && ft_lstsize(*list_a) > 3)
+    while (ft_lstsize(*list_a) > 3)
     {
-        pb(list_a, list_b);
-        printf("\n");
-        temp = temp->next;
+        pb (list_a, list_b);
     }
-    temp = *list_b;
-    while(temp->next != NULL)
+    t_list_a *temp_a = *list_a;
+    while (temp_a != NULL)
     {
-        printf("%d", temp->number);
-        printf("\n");
-        temp = temp->next;
+        printf("No");
+        printf("Digit: %d, with index %d\n", temp_a->number, temp_a->index);
+        temp_a = temp_a->next;
+    }
+    t_list_a *temp_b = *list_b;
+    while (temp_b != NULL)
+    {
+        printf("Yes");
+        printf("Digit: %d, with index %d\n", temp_b->number, temp_b->index);
+        temp_b = temp_b->next;
     }
 }

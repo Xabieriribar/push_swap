@@ -30,7 +30,9 @@ int main(int argc, char **argv)
         if (ft_lstsize(list_a) == 3)
             sort_three(&list_a);
         if (ft_lstsize(list_a) >= 4)
+        {
             sort_turks(&list_a, &list_b);
+        }
         // while (list_a != NULL)
         // {
         //     printf("%d", list_a->number);

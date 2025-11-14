@@ -36,6 +36,7 @@ int	ft_printf(const char *format, ...);
 //LISTS
 t_list_a *ft_lstlast(t_list_a *list);
 size_t ft_lstsize(t_list_a *list);
+t_list_a *ft_lstnew(int number, int index);
 //SORTS
 void    sort_two(t_list_a **list);
 void    sort_three(t_list_a **list);

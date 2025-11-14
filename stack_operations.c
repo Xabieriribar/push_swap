@@ -15,20 +15,25 @@ bool    ft_is_sorted(t_list_a *list)
 and adding them always at the top*/
 void    pb(t_list_a **list_a, t_list_a **list_b)
 {
-    if (*list_b == NULL)
+    t_list_a *node;
+
+    node = *list_a;
+    *list_a = (*list_a)->next;
+    if (*list_a)
+        (*list_a)->prev = NULL;
+    if (!*list_b)
     {
-        *list_b = *list_a;
-        (*list_b)->next = NULL;
-        (*list_b)->prev = NULL;
+        node->next = NULL;
+        node->prev = NULL;
+        *list_b = node;
     }
     else
     {
-        (*list_b)->next = (*list_b);
-        (*list_b) = *list_a;
+        node->next = (*list_b);
+        node->prev = NULL;
+        (*list_b)->prev = node;
+        *list_b = node;
     }
-    (*list_a) = (*list_a)->next;
-    (*list_a)->prev = NULL;
-    printf("pb\n");
 }
 void    sa(t_list_a **list)
 {
