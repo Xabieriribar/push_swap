@@ -55,7 +55,7 @@ void    sort_turks(t_list_a **list_a, t_list_a **list_b)
         }
         else
         {
-            if (calculate_median(*list_a) <= target_node->index)
+            if (calculate_median(*list_a) > target_node->index)
             {
                 while (target_node->index != 0)
                 {
@@ -89,7 +89,7 @@ void    sort_turks(t_list_a **list_a, t_list_a **list_b)
     while (temp_a != NULL)
     {
         smallest = find_smallest(*list_a);
-        if (calculate_median(*list_a) <= smallest->index)
+        if (calculate_median(*list_a) > smallest->index)
         {
             while (smallest->index != 0)
             {

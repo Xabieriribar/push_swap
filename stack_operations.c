@@ -78,28 +78,17 @@ void    sa(t_list_a **list)
 
 void    rra(t_list_a **list)
 {
-    int temp_n;
-    int first_n;
-    int temp_next;
-    t_list_a *last;
-    t_list_a *temp;
+    t_list_a *node;
+    t_list_a *prev;
 
-    last = ft_lstlast(*list);
-    first_n = (*list)->number;
-    temp = *list;
-    while (temp ->next->next != NULL)
-    {
-        if (temp->number == first_n)
-        {
-            temp_n = temp->number;
-            temp->number = last->number;
-            continue;
-        }
-        temp_next = temp->next->number;
-        temp->next->number = temp_n;
-        temp->next->next->number = temp_next;
-        temp = temp->next;
-    }
+    node = *list;
+    prev = ft_lstlast(*list);
+    prev = prev->prev;
+    *list = ft_lstlast(*list);
+    node->prev = *list;
+    (*list)->next = node;
+    (*list)->prev = NULL;
+    prev->next = NULL;
     ft_printf("rra\n");
 }
 void    ra(t_list_a **list)
@@ -111,6 +100,7 @@ void    ra(t_list_a **list)
     last_temp = ft_lstlast(*list);
     *list = (*list)->next;
     last_temp->next = first_temp;
+    first_temp->prev = last_temp;
     first_temp->next = NULL;
     ft_printf("ra\n");
 }
