@@ -34,6 +34,31 @@ void    pb(t_list_a **list_a, t_list_a **list_b)
         (*list_b)->prev = node;
         *list_b = node;
     }
+    ft_printf("pb");
+}
+
+void    pa(t_list_a **list_a, t_list_a **list_b)
+{
+    t_list_a *node;
+
+    node = *list_b;
+    *list_b = (*list_b)->next;
+    if (*list_b)
+        (*list_b)->prev = NULL;
+    if (!*list_a)
+    {
+        node->next = NULL;
+        node->prev = NULL;
+        *list_a = node;
+    }
+    else
+    {
+        node->next = (*list_a);
+        node->prev = NULL;
+        (*list_a)->prev = node;
+        *list_a = node;
+    }
+    ft_printf("pa");
 }
 void    sa(t_list_a **list)
 {

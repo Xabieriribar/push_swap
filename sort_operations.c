@@ -44,6 +44,73 @@ void    sort_turks(t_list_a **list_a, t_list_a **list_b)
         printf("Digit: %d, with index %d\n", temp_b->number, temp_b->index);
         temp_b = temp_b->next;
     }
-    target_node = get_target_node(*list_a, *list_b, NEXT_BIGGEST);
-    printf("The closest biggest is %d", target_node->number);
+    temp_b = *list_b;
+    while (temp_b != NULL && *list_b)
+    {
+        target_node = get_target_node(*list_a, *list_b, NEXT_BIGGEST);
+        if (target_node->index == 0)
+        {
+            pa(list_a, list_b);
+            update_indexes(list_a, list_b);
+        }
+        else
+        {
+            if (calculate_median(*list_a) <= target_node->index)
+            {
+                while (target_node->index != 0)
+                {
+                    ra(list_a);
+                    update_indexes(list_a, list_b);
+                }
+                pa(list_a, list_b);
+            }
+            else
+            {
+                while (target_node->index != 0)
+                {
+                    rra(list_a);
+                    update_indexes(list_a, list_b);
+                }
+                pa(list_a, list_b);
+            }
+        }
+        temp_b = temp_b->next;
+    }
+    temp_a = *list_a;
+    while (temp_a != NULL)
+    {
+        printf("digit: %d, with index %d\n", temp_a->number, temp_a->index);
+        temp_a = temp_a->next;
+    }
+    temp_a = *list_a;
+    t_list_a *smallest;
+
+
+    while (temp_a != NULL)
+    {
+        smallest = find_smallest(*list_a);
+        if (calculate_median(*list_a) <= smallest->index)
+        {
+            while (smallest->index != 0)
+            {
+                ra(list_a);
+                update_indexes(list_a, list_b);
+            }
+        }
+        else
+        {
+            while (smallest->index != 0)
+            {
+                rra(list_a);
+                update_indexes(list_a, list_b);
+            }
+        }
+        temp_a = temp_a->next;
+    }
+    temp_a = *list_a;
+    while (temp_a != NULL)
+    {
+        printf("digit: %d, with index %d\n", temp_a->number, temp_a->index);
+        temp_a = temp_a->next;
+    }
 }

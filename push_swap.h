@@ -52,11 +52,13 @@ bool    swap_two(t_list_a **list);
 //TURK UTILS
 void    update_indexes(t_list_a **list_a, t_list_a **list_b);
 t_list_a *get_target_node(t_list_a *list_a, t_list_a *source_node, int to_find);
+int calculate_median(t_list_a *list_a);
+t_list_a *find_smallest(t_list_a *list);
 //OPERATIONS
 void    sa(t_list_a **list);
 void    rra(t_list_a **list);
 void    ra(t_list_a **list);
 void    pb(t_list_a **list_a, t_list_a **list_b);
-
+void    pa(t_list_a **list_a, t_list_a **list_b);
 #endif
 

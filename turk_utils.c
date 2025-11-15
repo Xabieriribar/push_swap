@@ -51,57 +51,48 @@ t_list_a *find_smallest(t_list_a *list)
 
 }
 
-t_list_a *find_closest_biggest(t_list_a *list, int biggest)
-{
-    t_list_a *closest_biggest;
-
-    if (biggest != list->number)
-        closest_biggest = list;
-    else
-        closest_biggest = list->next;
-    while (list != NULL)
-    {
-        if (list->number > closest_biggest->number && list->number != biggest)
-            closest_biggest = list;
-        list = list->next;
-    }
-    return (closest_biggest);
-}
 t_list_a *find_next_biggest(t_list_a *list_a, int source_number)
 {
     t_list_a *biggest;
     t_list_a *smallest;
-    t_list_a *closest_biggest;
 
     biggest = find_biggest(list_a);
     smallest = find_smallest(list_a);
     if (source_number > biggest->number)
         return (smallest);
-    while (true)
+    if (!ft_is_sorted(list_a))
+    while (list_a != NULL)
     {
-        closest_biggest = find_closest_biggest(list_a, biggest->number);
-        if (closest_biggest->number == biggest->number)
-            return (closest_biggest);
-        if (source_number > closest_biggest->number)
-            return (biggest);
-        if (closest_biggest->index == 0)
-            return (closest_biggest);
-        else
-            biggest->number = closest_biggest->number;
+        if (source_number < list_a->number)
+        {
+            biggest = list_a;
+            break ;
+        }
+        list_a = list_a->next;
     }
+    return (biggest);
 }
 t_list_a *get_target_node(t_list_a *list_a, t_list_a *source_node, int to_find)
 {
-    t_list_a *target_node;
     int source_number;
     
     source_number = source_node->number;
     if (to_find == NEXT_BIGGEST)
-    {
-        target_node = list_a;
         return (find_next_biggest(list_a, source_number));
+    // else
+    //     return (find_next_smallest(list_a, source_number));
+    return (0);
+}
+
+int calculate_median(t_list_a *list_a)
+{
+    int median;
+    
+    median = 0;
+    if (ft_lstsize(list_a) % 2 == 0)
+    {
+        printf("%d", 6 / 2);
+        median = ft_lstsize(list_a) / 2;
     }
-    else
-        return (0);
-    return (target_node);
+    return (median);
 }
