@@ -182,7 +182,7 @@ void    is_target_below_or_above(t_list_a *target_node, t_list_a **list_a, t_lis
                 ra(list_b);
                 (*list_b)->cost++;
             }
-            update_indexes(list_a, list_b);
+            update_indexes(list_a, NULL);
             if (mode == 0)
                 (*list_a)->cost++;
         }
@@ -246,7 +246,6 @@ t_list_a *find_node_with_smallest_cost(t_list_a **list_a, t_list_a **list_b)
 {
     t_list_a *temp_list_b;
     t_list_a *temp_list_a;
-    t_list_a *temp_temp_list_b;
     t_list_a *temp_temp_list_a;
     t_list_a *temp_node;
 
@@ -256,23 +255,45 @@ t_list_a *find_node_with_smallest_cost(t_list_a **list_a, t_list_a **list_b)
     print_list(temp_list_a);
     temp_list_a->cost = 0;
     temp_list_b->cost = 0;
-    temp_temp_list_a = temp_list_a;
-    while (temp_temp_list_a != NULL)
+    while (temp_list_a != NULL)
     {
-        temp_node = temp_temp_list_a;
-        is_target_below_or_above(temp_node, &temp_list_a, &temp_list_b, 0, FOR_A);
-        temp_temp_list_a = temp_temp_list_a->next;
+        temp_node = temp_list_a;
+        temp_temp_list_a = copy_list(*list_a);
+        if (calculate_median(temp_list_a) > temp_node->index || temp_node->index == 1)
+        {
+            while (temp_node->index != 0)
+            {
+                ra(&temp_temp_list_a);
+                update_indexes(&temp_temp_list_a, NULL);
+                temp_list_a->cost++;
+                temp_node->index--;
+                printf("For number %d there is a cost of %d\n", temp_list_a->number, temp_list_a->cost);
+            }
+        }
+        else
+        {
+            while(temp_node->index != 0)
+            {
+                rra(&temp_temp_list_a);
+                update_indexes(&temp_temp_list_a, NULL);
+                temp_list_a->cost++;
+                temp_node->index--;
+                printf("For number %d there is a cost of %d\n", temp_list_a->number, temp_list_a->cost);
+            }
+        }
+        temp_list_a = temp_list_a->next;
     }
-    update_indexes(&temp_list_a, &temp_list_b);
-    temp_temp_list_b = temp_list_b;
-    while (temp_temp_list_b != NULL)
-    {
-        temp_node = temp_list_b;
-        is_target_below_or_above(temp_node, &temp_list_a, &temp_list_b, 0, 0);
-        printf("The node with number %d and index %d on list b has a cost of %d", temp_temp_list_b->number, temp_temp_list_b->index, temp_temp_list_b->cost);
-        temp_temp_list_b = temp_temp_list_b->next;
-    }
-    update_indexes(&temp_list_a, &temp_list_b);
+    // printf("The node with number %d and index %d on list b has a cost of %d", temp_list_a->number, temp_list_b->index, temp_list_a->cost);
+    // update_indexes(&temp_list_a, &temp_list_b);
+    // temp_temp_list_b = temp_list_b;
+    // while (temp_temp_list_b != NULL)
+    // {
+    //     temp_node = temp_list_b;
+    //     is_target_below_or_above(temp_node, &temp_list_a, &temp_list_b, 0, 0);
+        // printf("The node with number %d and index %d on list b has a cost of %d", temp_temp_list_b->number, temp_temp_list_b->index, temp_temp_list_b->cost);
+    //     temp_temp_list_b = temp_temp_list_b->next;
+    // }
+    // update_indexes(&temp_list_a, &temp_list_b);
     return (0);
 }
 void    from_a_to_b(t_list_a **list_a, t_list_a **list_b)
