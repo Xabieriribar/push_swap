@@ -34,7 +34,7 @@ void    pb(t_list_a **list_a, t_list_a **list_b)
         (*list_b)->prev = node;
         *list_b = node;
     }
-    ft_printf("pb");
+    ft_printf("pb\n");
 }
 
 void    pa(t_list_a **list_a, t_list_a **list_b)
@@ -58,7 +58,7 @@ void    pa(t_list_a **list_a, t_list_a **list_b)
         (*list_a)->prev = node;
         *list_a = node;
     }
-    ft_printf("pa");
+    ft_printf("pa\n");
 }
 void    sa(t_list_a **list)
 {

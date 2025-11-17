@@ -22,95 +22,22 @@ void    sort_three(t_list_a **list)
 
 void    sort_turks(t_list_a **list_a, t_list_a **list_b)
 {
-    t_list_a *target_node;
+    from_a_to_b(list_a, list_b);
     while (ft_lstsize(*list_a) > 3)
     {
         pb (list_a, list_b);
     }
+    update_indexes(list_a, list_b);
     if (!ft_is_sorted(*list_a))
         sort_three(list_a);
     update_indexes(list_a, list_b);
-    t_list_a *temp_a = *list_a;
-    printf("List a\n");
-    while (temp_a != NULL)
-    {
-        printf("Digit: %d, with index %d\n", temp_a->number, temp_a->index);
-        temp_a = temp_a->next;
-    }
+    print_list(*list_a);
     t_list_a *temp_b = *list_b;
-    printf("List b\n");
-    while (temp_b != NULL)
-    {
-        printf("Digit: %d, with index %d\n", temp_b->number, temp_b->index);
-        temp_b = temp_b->next;
-    }
+    print_list(*list_b);
     temp_b = *list_b;
-    while (temp_b != NULL && *list_b)
-    {
-        target_node = get_target_node(*list_a, *list_b, NEXT_BIGGEST);
-        if (target_node->index == 0)
-        {
-            pa(list_a, list_b);
-            update_indexes(list_a, list_b);
-        }
-        else
-        {
-            if (calculate_median(*list_a) > target_node->index)
-            {
-                while (target_node->index != 0)
-                {
-                    ra(list_a);
-                    update_indexes(list_a, list_b);
-                }
-                pa(list_a, list_b);
-            }
-            else
-            {
-                while (target_node->index != 0)
-                {
-                    rra(list_a);
-                    update_indexes(list_a, list_b);
-                }
-                pa(list_a, list_b);
-            }
-        }
-        temp_b = temp_b->next;
-    }
-    temp_a = *list_a;
-    while (temp_a != NULL)
-    {
-        printf("digit: %d, with index %d\n", temp_a->number, temp_a->index);
-        temp_a = temp_a->next;
-    }
-    temp_a = *list_a;
-    t_list_a *smallest;
-
-
-    while (temp_a != NULL)
-    {
-        smallest = find_smallest(*list_a);
-        if (calculate_median(*list_a) > smallest->index)
-        {
-            while (smallest->index != 0)
-            {
-                ra(list_a);
-                update_indexes(list_a, list_b);
-            }
-        }
-        else
-        {
-            while (smallest->index != 0)
-            {
-                rra(list_a);
-                update_indexes(list_a, list_b);
-            }
-        }
-        temp_a = temp_a->next;
-    }
-    temp_a = *list_a;
-    while (temp_a != NULL)
-    {
-        printf("digit: %d, with index %d\n", temp_a->number, temp_a->index);
-        temp_a = temp_a->next;
-    }
+    from_b_to_a(list_a, list_b);
+    print_list(*list_a);
+    sort_smallest(list_a);
+    update_indexes(list_a, list_b);
+    print_list(*list_a);
 }

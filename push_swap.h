@@ -14,10 +14,16 @@
 #ifndef NEXT_BIGGEST
 #define NEXT_BIGGEST 1
 #endif
+
+#ifndef NEXT_SMALLEST
+#define NEXT_SMALLEST 0
+#endif
+
 typedef struct s_list_a
 {
     int number;
     int index;
+    t_list_a *target_node;
     struct s_list_a *next;
     struct s_list_a *prev;
 } t_list_a;
@@ -41,6 +47,7 @@ int	ft_printf(const char *format, ...);
 t_list_a *ft_lstlast(t_list_a *list);
 size_t ft_lstsize(t_list_a *list);
 t_list_a *ft_lstnew(int number, int index);
+void print_list(t_list_a *list);
 //SORTS
 void    sort_two(t_list_a **list);
 void    sort_three(t_list_a **list);
@@ -54,6 +61,9 @@ void    update_indexes(t_list_a **list_a, t_list_a **list_b);
 t_list_a *get_target_node(t_list_a *list_a, t_list_a *source_node, int to_find);
 int calculate_median(t_list_a *list_a);
 t_list_a *find_smallest(t_list_a *list);
+void    sort_smallest(t_list_a **list_a);
+void    from_b_to_a(t_list_a **list_a, t_list_a **list_b);
+void    from_a_to_b(t_list_a **list_a, t_list_a **list_b);
 //OPERATIONS
 void    sa(t_list_a **list);
 void    rra(t_list_a **list);

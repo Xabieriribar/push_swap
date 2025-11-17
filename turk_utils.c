@@ -1,5 +1,16 @@
 #include "push_swap.h"
 
+void print_list(t_list_a *list)
+{
+    printf("Printing list...\n");
+    while (list != NULL)
+    {
+        printf("Digit %d with index %d\n", list->number, list->index);
+        list = list->next;
+    }
+    printf("\n");
+}
+
 void    update_indexes(t_list_a **list_a, t_list_a **list_b)
 {
     t_list_a *temp;
@@ -13,6 +24,8 @@ void    update_indexes(t_list_a **list_a, t_list_a **list_b)
         index++;
         temp = temp->next;
     }
+    if (list_b == NULL)
+        return ;
     temp = *list_b;
     index = 0;
     while (temp != NULL)
@@ -86,8 +99,8 @@ t_list_a *get_target_node(t_list_a *list_a, t_list_a *source_node, int to_find)
     source_number = source_node->number;
     if (to_find == NEXT_BIGGEST)
         return (find_next_biggest(list_a, source_number));
-    // else
-    //     return (find_next_smallest(list_a, source_number));
+    else if (to_find == NEXT_SMALLEST)
+        return (find_next_smallest(list_a, source_number));
     return (0);
 }
 
@@ -104,4 +117,103 @@ int calculate_median(t_list_a *list_a)
     else
         median = (ft_lstsize(list_a) / 2) + 1;
     return (median);
+}
+
+void    sort_smallest(t_list_a **list_a)
+{
+    t_list_a *temp_a;
+    t_list_a *smallest;
+
+    temp_a = *list_a;
+    while (temp_a != NULL)
+    {
+        smallest = find_smallest(*list_a);
+        if (calculate_median(*list_a) > smallest->index)
+        {
+            while (smallest->index != 0)
+            {
+                ra(list_a);
+                update_indexes(list_a, NULL);
+            }
+        }
+        else
+        {
+            while (smallest->index != 0)
+            {
+                rra(list_a);
+                update_indexes(list_a, NULL);
+            }
+        }
+        temp_a = temp_a->next;
+    }
+}
+
+void    is_target_below_or_above(t_list_a *target_node, t_list_a **list_a, t_list_a **list_b)
+{
+    if (calculate_median(*list_a) > target_node->index)
+    {
+        while (target_node->index != 0)
+        {
+            ra(list_a);
+            update_indexes(list_a, list_b);
+        }
+        pa(list_a, list_b);
+    }
+    else
+    {
+        while (target_node->index != 0)
+        {
+            rra(list_a);
+            update_indexes(list_a, list_b);
+        }
+        pa(list_a, list_b);
+    }
+}
+void    from_b_to_a(t_list_a **list_a, t_list_a **list_b)
+{
+    t_list_a *temp_b;
+    t_list_a *target_node;
+
+    temp_b = *list_b;
+    while (temp_b != NULL && *list_b)
+    {
+        target_node = get_target_node(*list_a, *list_b, NEXT_BIGGEST);
+        if (target_node->index == 0)
+        {
+            pa(list_a, list_b);
+            update_indexes(list_a, list_b);
+        }
+        else
+            is_target_below_or_above(target_node, list_a, list_b);
+        temp_b = temp_b->next;
+    }
+    update_indexes(list_a, list_b);
+}
+void    assign_target_nodes_to_a(t_list_a **list_a, t_list_a **list_b)
+{
+    t_list_a *target_nodes;
+    t_list_a *temp_a;
+
+    while (temp_a != NULL)
+    {
+        target_nodes = get_target_node(*list_b, temp_a, NEXT_SMALLEST);
+        temp_a->target_node = target_nodes;
+        temp_a = temp_a->next;
+    }
+}
+void    from_a_to_b(t_list_a **list_a, t_list_a **list_b)
+{
+    int index_to_push_b;
+    
+    while (ft_lstsize(*list_a) > 3)
+    {
+        index_to_push_b = 0;
+        while (index_to_push_b < 2)
+        {
+            pb(list_a, list_b);
+            index_to_push_b++;
+            assign_target_nodes_to_a(list_a, list_b);
+        }
+    }
+
 }
