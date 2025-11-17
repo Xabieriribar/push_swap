@@ -75,10 +75,6 @@ t_list_a *find_next_biggest(t_list_a *list_a, int source_number)
     smallest = find_smallest(list_a);
     if (source_number > biggest->number)
         return (smallest);
-    if (!ft_is_sorted(list_a))
-    {
-
-    }
     mode = 0;
     candidate = list_a;
     while (list_a != NULL)
@@ -92,15 +88,40 @@ t_list_a *find_next_biggest(t_list_a *list_a, int source_number)
     }
     return (candidate);
 }
-t_list_a *get_target_node(t_list_a *list_a, t_list_a *source_node, int to_find)
+
+t_list_a *find_next_smallest(t_list_a *list_b, int source_number)
+{
+    t_list_a *biggest;
+    t_list_a *smallest;
+    t_list_a *candidate;
+    int      mode;
+
+    biggest = find_biggest(list_b);
+    smallest = find_smallest(list_b);
+    if (source_number < smallest->number)
+        return (biggest);
+    mode = 0;
+    candidate = list_b;
+    while (list_b != NULL)
+    {
+        if (source_number > list_b->number && (mode == 0 || list_b->number > candidate->number))
+        {
+            mode = 1;
+            candidate = list_b;
+        }
+        list_b = list_b->next;
+    }
+    return (candidate);
+}
+t_list_a *get_target_node(t_list_a *list, t_list_a *source_node, int to_find)
 {
     int source_number;
     
     source_number = source_node->number;
     if (to_find == NEXT_BIGGEST)
-        return (find_next_biggest(list_a, source_number));
+        return (find_next_biggest(list, source_number));
     else if (to_find == NEXT_SMALLEST)
-        return (find_next_smallest(list_a, source_number));
+        return (find_next_smallest(list, source_number));
     return (0);
 }
 
@@ -148,25 +169,43 @@ void    sort_smallest(t_list_a **list_a)
     }
 }
 
-void    is_target_below_or_above(t_list_a *target_node, t_list_a **list_a, t_list_a **list_b)
+void    is_target_below_or_above(t_list_a *target_node, t_list_a **list_a, t_list_a **list_b, int mode, int for_which_list)
 {
     if (calculate_median(*list_a) > target_node->index)
     {
         while (target_node->index != 0)
         {
-            ra(list_a);
+            if (for_which_list == FOR_A)
+                ra(list_a);
+            else
+            {
+                ra(list_b);
+                (*list_b)->cost++;
+            }
             update_indexes(list_a, list_b);
+            if (mode == 0)
+                (*list_a)->cost++;
         }
-        pa(list_a, list_b);
+        if (mode == PUSH_TO_A)
+            pa(list_a, list_b);
     }
     else
     {
         while (target_node->index != 0)
         {
-            rra(list_a);
+            if (for_which_list == FOR_A)
+                rra(list_a);
+            else
+            {
+                rra(list_b);
+                (*list_b)->cost++;
+            }
             update_indexes(list_a, list_b);
+            if (mode == 0)
+                (*list_a)->cost++;
         }
-        pa(list_a, list_b);
+        if (mode == PUSH_TO_A)
+            pa(list_a, list_b);
     }
 }
 void    from_b_to_a(t_list_a **list_a, t_list_a **list_b)
@@ -184,7 +223,7 @@ void    from_b_to_a(t_list_a **list_a, t_list_a **list_b)
             update_indexes(list_a, list_b);
         }
         else
-            is_target_below_or_above(target_node, list_a, list_b);
+            is_target_below_or_above(target_node, list_a, list_b, PUSH_TO_A, FOR_A);
         temp_b = temp_b->next;
     }
     update_indexes(list_a, list_b);
@@ -194,26 +233,69 @@ void    assign_target_nodes_to_a(t_list_a **list_a, t_list_a **list_b)
     t_list_a *target_nodes;
     t_list_a *temp_a;
 
+    temp_a = *list_a;
     while (temp_a != NULL)
     {
         target_nodes = get_target_node(*list_b, temp_a, NEXT_SMALLEST);
+        printf("For the node with number %d its target node in b is %d\n", temp_a->number, target_nodes->number);
         temp_a->target_node = target_nodes;
         temp_a = temp_a->next;
     }
 }
+t_list_a *find_node_with_smallest_cost(t_list_a **list_a, t_list_a **list_b)
+{
+    t_list_a *temp_list_b;
+    t_list_a *temp_list_a;
+    t_list_a *temp_temp_list_b;
+    t_list_a *temp_temp_list_a;
+    t_list_a *temp_node;
+
+    temp_list_b = copy_list(*list_b);
+    print_list(temp_list_b);
+    temp_list_a = copy_list(*list_a);
+    print_list(temp_list_a);
+    temp_list_a->cost = 0;
+    temp_list_b->cost = 0;
+    temp_temp_list_a = temp_list_a;
+    while (temp_temp_list_a != NULL)
+    {
+        temp_node = temp_temp_list_a;
+        is_target_below_or_above(temp_node, &temp_list_a, &temp_list_b, 0, FOR_A);
+        temp_temp_list_a = temp_temp_list_a->next;
+    }
+    update_indexes(&temp_list_a, &temp_list_b);
+    temp_temp_list_b = temp_list_b;
+    while (temp_temp_list_b != NULL)
+    {
+        temp_node = temp_list_b;
+        is_target_below_or_above(temp_node, &temp_list_a, &temp_list_b, 0, 0);
+        printf("The node with number %d and index %d on list b has a cost of %d", temp_temp_list_b->number, temp_temp_list_b->index, temp_temp_list_b->cost);
+        temp_temp_list_b = temp_temp_list_b->next;
+    }
+    update_indexes(&temp_list_a, &temp_list_b);
+    return (0);
+}
 void    from_a_to_b(t_list_a **list_a, t_list_a **list_b)
 {
+    int mode;
     int index_to_push_b;
+    t_list_a *smallest_to_push;
     
+    mode = 0;
+    index_to_push_b = 0;
     while (ft_lstsize(*list_a) > 3)
     {
-        index_to_push_b = 0;
-        while (index_to_push_b < 2)
+        while (index_to_push_b < 2 || mode == 0)
         {
             pb(list_a, list_b);
             index_to_push_b++;
-            assign_target_nodes_to_a(list_a, list_b);
+            mode = 1;
         }
+        update_indexes(list_a, list_b);
+        assign_target_nodes_to_a(list_a, list_b);
+        update_indexes(list_a, list_b);
+        smallest_to_push = find_node_with_smallest_cost(list_a, list_b);
+        //TODO: fix the function pb so that it pushes any node from a to b;
     }
-
+    exit(EXIT_SUCCESS);
 }

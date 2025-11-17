@@ -19,11 +19,19 @@
 #define NEXT_SMALLEST 0
 #endif
 
+#ifndef PUSH_TO_A
+#define PUSH_TO_A 2
+#endif
+
+#ifndef FOR_A
+#define FOR_A 3
+#endif
 typedef struct s_list_a
 {
     int number;
     int index;
-    t_list_a *target_node;
+    int cost;
+    struct s_list_a *target_node;
     struct s_list_a *next;
     struct s_list_a *prev;
 } t_list_a;
@@ -48,6 +56,7 @@ t_list_a *ft_lstlast(t_list_a *list);
 size_t ft_lstsize(t_list_a *list);
 t_list_a *ft_lstnew(int number, int index);
 void print_list(t_list_a *list);
+t_list_a *copy_list(t_list_a *list);
 //SORTS
 void    sort_two(t_list_a **list);
 void    sort_three(t_list_a **list);

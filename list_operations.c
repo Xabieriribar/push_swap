@@ -84,3 +84,18 @@ void    make_list(t_list_a **list, int *numbers, int argc)
 {
     ft_fill_list(list, numbers, argc);
 }
+
+t_list_a *copy_list(t_list_a *list)
+{
+    t_list_a *new_list;
+    t_list_a *new_node;
+
+    new_list = NULL;
+    while (list != NULL)
+    {
+        new_node = ft_lstnew(list->number, list->index);
+        add_node(&new_list, new_node);
+        list = list->next; 
+    }
+    return (new_list);
+}
