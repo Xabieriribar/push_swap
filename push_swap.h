@@ -19,12 +19,13 @@
 #define NEXT_SMALLEST 0
 #endif
 
-#ifndef PUSH_TO_A
-#define PUSH_TO_A 2
+
+#ifndef PUSH_A
+#define PUSH_A 2
 #endif
 
-#ifndef FOR_A
-#define FOR_A 3
+#ifndef PUSH_B
+#define PUSH_B 3
 #endif
 typedef struct s_list_a
 {

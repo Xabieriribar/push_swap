@@ -172,43 +172,31 @@ void    sort_smallest(t_list_a **list_a)
     }
 }
 
-void    is_target_below_or_above(t_list_a *target_node, t_list_a **list_a, t_list_a **list_b, int mode, int for_which_list)
+void    is_target_below_or_above(t_list_a *target_node, t_list_a **list_a, t_list_a **list_b, int mode)
 {
     if (calculate_median(*list_a) >= target_node->index)
     {
         while (target_node->index != 0)
         {
-            if (for_which_list == FOR_A)
-                ra(list_a);
-            else
-            {
-                ra(list_b);
-                (*list_b)->cost++;
-            }
+            ra(list_a);
             update_indexes(list_a, NULL);
-            if (mode == 0)
-                (*list_a)->cost++;
         }
-        if (mode == PUSH_TO_A)
+        if (mode == PUSH_A)
             pa(list_a, list_b);
+        else
+            pb(list_a, list_b);
     }
     else
     {
         while (target_node->index != 0)
         {
-            if (for_which_list == FOR_A)
-                rra(list_a);
-            else
-            {
-                rra(list_b);
-                (*list_b)->cost++;
-            }
+            rra(list_a);
             update_indexes(list_a, list_b);
-            if (mode == 0)
-                (*list_a)->cost++;
         }
-        if (mode == PUSH_TO_A)
+        if (mode == PUSH_A)
             pa(list_a, list_b);
+        else
+            pb(list_a, list_b);
     }
 }
 void    from_b_to_a(t_list_a **list_a, t_list_a **list_b)
@@ -226,10 +214,10 @@ void    from_b_to_a(t_list_a **list_a, t_list_a **list_b)
             update_indexes(list_a, list_b);
         }
         else
-            is_target_below_or_above(target_node, list_a, list_b, PUSH_TO_A, FOR_A);
+            is_target_below_or_above(target_node, list_a, list_b, PUSH_A);
         temp_b = temp_b->next;
+        update_indexes(list_a, list_b);
     }
-    update_indexes(list_a, list_b);
 }
 void    assign_target_nodes_to_a(t_list_a **list_a, t_list_a **list_b)
 {
@@ -245,6 +233,24 @@ void    assign_target_nodes_to_a(t_list_a **list_a, t_list_a **list_b)
         temp_a = temp_a->next;
     }
 }
+t_list_a *return_lowest_cost_node(t_list_a *list_a)
+{
+    t_list_a *lowest_cost_node;
+    int         mode;
+
+    mode = 0;
+    lowest_cost_node = list_a;
+    while (list_a != NULL)
+    {
+        if (lowest_cost_node->cost > list_a->cost && (lowest_cost_node->index < list_a->index || mode == 0))
+        {
+            mode = 1;
+            lowest_cost_node = list_a;
+        }
+        list_a = list_a->next;
+    }
+    return (lowest_cost_node);
+}
 t_list_a *find_node_with_smallest_cost(t_list_a **list_a, t_list_a **list_b)
 {
     t_list_a *temp_list_b;
@@ -253,9 +259,7 @@ t_list_a *find_node_with_smallest_cost(t_list_a **list_a, t_list_a **list_b)
     t_list_a *temp_node;
 
     temp_list_b = copy_list(*list_b);
-    print_list(temp_list_b);
     temp_list_a = copy_list(*list_a);
-    print_list(temp_list_a);
     temp_list_a->cost = 0;
     temp_list_b->cost = 0;
     t_list_a *save_list_a = temp_list_a;
@@ -263,8 +267,6 @@ t_list_a *find_node_with_smallest_cost(t_list_a **list_a, t_list_a **list_b)
     {
         temp_node = temp_list_a;
         temp_temp_list_a = copy_list(*list_a);
-        printf("On the first iteration the list looks like this:\n");
-        print_list(temp_temp_list_a);
         if (calculate_median(temp_list_a) >= temp_node->index)
         {
             while (temp_node->index != 0)
@@ -285,7 +287,6 @@ t_list_a *find_node_with_smallest_cost(t_list_a **list_a, t_list_a **list_b)
                 temp_node->index++;
             }
         }
-        printf("For number %d there is a cost of %d\n", temp_list_a->number, temp_list_a->cost);
         temp_list_a = temp_list_a->next;
     }
     temp_list_a = save_list_a;
@@ -316,13 +317,9 @@ t_list_a *find_node_with_smallest_cost(t_list_a **list_a, t_list_a **list_b)
         temp_list_a = temp_list_a->next;
     }
     temp_list_a = save_list_a;
-    print_list(temp_list_a);
-    while (temp_list_a != NULL)
-    {
-        printf("For the node with number %d its cost is %d\n", temp_list_a->number, temp_list_a->cost);
-        temp_list_a = temp_list_a->next;
-    }
-    exit(EXIT_SUCCESS);
+    update_indexes(&temp_list_a, NULL);
+    return (return_lowest_cost_node(temp_list_a));
+    // exit(EXIT_SUCCESS);
 }
 void    from_a_to_b(t_list_a **list_a, t_list_a **list_b)
 {
@@ -344,7 +341,10 @@ void    from_a_to_b(t_list_a **list_a, t_list_a **list_b)
         assign_target_nodes_to_a(list_a, list_b);
         update_indexes(list_a, list_b);
         smallest_to_push = find_node_with_smallest_cost(list_a, list_b);
-        //TODO: fix the function pb so that it pushes any node from a to b;
+        printf("Smallest to push %d", smallest_to_push->number);
+        if (smallest_to_push->index != 0)
+            pb(list_a, list_b);
+        else
+            is_target_below_or_above(smallest_to_push, list_a, list_b, PUSH_B);
     }
-    exit(EXIT_SUCCESS);
 }
