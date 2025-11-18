@@ -135,7 +135,6 @@ int calculate_median(t_list_a *list_a)
     median = 0;
     if (ft_lstsize(list_a) % 2 == 0)
     {
-        printf("%d", 6 / 2);
         median = ft_lstsize(list_a) / 2;
     }
     else
@@ -228,7 +227,6 @@ void    assign_target_nodes_to_a(t_list_a **list_a, t_list_a **list_b)
     while (temp_a != NULL)
     {
         target_nodes = get_target_node(*list_b, temp_a, NEXT_SMALLEST);
-        printf("For the node with number %d its target node in b is %d\n", temp_a->number, target_nodes->number);
         temp_a->target_node = target_nodes;
         temp_a = temp_a->next;
     }
@@ -341,7 +339,6 @@ void    from_a_to_b(t_list_a **list_a, t_list_a **list_b)
         assign_target_nodes_to_a(list_a, list_b);
         update_indexes(list_a, list_b);
         smallest_to_push = find_node_with_smallest_cost(list_a, list_b);
-        printf("Smallest to push %d", smallest_to_push->number);
         if (smallest_to_push->index != 0)
             pb(list_a, list_b);
         else

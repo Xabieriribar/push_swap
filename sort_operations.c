@@ -31,21 +31,11 @@ void    sort_turks(t_list_a **list_a, t_list_a **list_b)
     if (!ft_is_sorted(*list_a))
     {
         sort_three(list_a);
-        printf("\n");
     }
     update_indexes(list_a, list_b);
-    printf("The list of three has recently been sorted\n");
-    print_list(*list_a);
     t_list_a *temp_b = *list_b;
-    // print_list(*list_b);
     temp_b = *list_b;
-    printf("This is b before passing it to a\n");
-    print_list(*list_b);
     from_b_to_a(list_a, list_b);
-    printf("These are the results to pass from b to a\n");
-    print_list(*list_a);
     sort_smallest(list_a);
     update_indexes(list_a, list_b);
-    print_list(*list_a);
-    // print_list(*list_a);
 }
