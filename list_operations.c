@@ -16,7 +16,7 @@
 //     list->index = index;
 // }
 
-t_list_a *ft_lstnew(int number, int index)
+t_list_a *ft_lstnew(int number, int index, t_list_a *target_node)
 {
     t_list_a *new;
 
@@ -25,6 +25,8 @@ t_list_a *ft_lstnew(int number, int index)
         return (NULL);
     new->index = index;
     new->number = number;
+    if (target_node != NULL)
+        new->target_node = target_node;
     new->prev = NULL;
     new->next = NULL;
     return (new);
@@ -61,7 +63,7 @@ void    ft_fill_list(t_list_a **list, int *numbers, int argc)
     node = NULL;
     while (index < argc - 1)
     {
-        node = ft_lstnew(numbers[index], index);
+        node = ft_lstnew(numbers[index], index, NULL);
         add_node(list, node);
         index++;
     }
@@ -93,7 +95,7 @@ t_list_a *copy_list(t_list_a *list)
     new_list = NULL;
     while (list != NULL)
     {
-        new_node = ft_lstnew(list->number, list->index);
+        new_node = ft_lstnew(list->number, list->index, list->target_node);
         add_node(&new_list, new_node);
         list = list->next; 
     }

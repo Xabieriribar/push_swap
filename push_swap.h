@@ -54,7 +54,7 @@ int	ft_printf(const char *format, ...);
 //LISTS
 t_list_a *ft_lstlast(t_list_a *list);
 size_t ft_lstsize(t_list_a *list);
-t_list_a *ft_lstnew(int number, int index);
+t_list_a *ft_lstnew(int number, int index, t_list_a *target_node);
 void print_list(t_list_a *list);
 t_list_a *copy_list(t_list_a *list);
 //SORTS
