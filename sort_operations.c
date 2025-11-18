@@ -2,7 +2,7 @@
 
 void    sort_two(t_list_a **list)
 {
-    sa(list);
+    sa(list, PRINT_IT);
 }
 
 void    sort_three(t_list_a **list)
@@ -16,16 +16,17 @@ void    sort_three(t_list_a **list)
     {
         put_biggest_in_bottom(list);
         if (!ft_is_sorted(*list))
-            sa(list);
+            sa(list, PRINT_IT);
     }
 }
 
 void    sort_turks(t_list_a **list_a, t_list_a **list_b)
 {
-    from_a_to_b(list_a, list_b);
+    if (ft_lstsize(*list_a) > 5)
+        from_a_to_b(list_a, list_b);
     while (ft_lstsize(*list_a) > 3)
     {
-        pb (list_a, list_b);
+        pb (list_a, list_b, PRINT_IT);
     }
     update_indexes(list_a, list_b);
     if (!ft_is_sorted(*list_a))

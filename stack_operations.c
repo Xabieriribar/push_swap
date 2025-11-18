@@ -13,7 +13,7 @@ bool    ft_is_sorted(t_list_a *list)
 
 /*This function adds element to the b stack, starting from the bottom
 and adding them always at the top*/
-void    pb(t_list_a **list_a, t_list_a **list_b)
+void    pb(t_list_a **list_a, t_list_a **list_b, int mode)
 {
     t_list_a *node;
 
@@ -34,10 +34,11 @@ void    pb(t_list_a **list_a, t_list_a **list_b)
         (*list_b)->prev = node;
         *list_b = node;
     }
-    ft_printf("pb\n");
+    if (mode == PRINT_IT)
+        ft_printf("pb\n");
 }
 
-void    pa(t_list_a **list_a, t_list_a **list_b)
+void    pa(t_list_a **list_a, t_list_a **list_b, int mode)
 {
     t_list_a *node;
 
@@ -58,9 +59,10 @@ void    pa(t_list_a **list_a, t_list_a **list_b)
         (*list_a)->prev = node;
         *list_a = node;
     }
-    ft_printf("pa\n");
+    if (mode == PRINT_IT)
+        ft_printf("pa\n");
 }
-void    sa(t_list_a **list)
+void    sa(t_list_a **list, int mode)
 {
     int temp_number;
     int temp_index;
@@ -73,10 +75,11 @@ void    sa(t_list_a **list)
     (*list)->index = (*list)->next->index;
     (*list)->next->number= temp_number;
     (*list)->next->index = temp_index;
-    ft_printf("sa\n");
+    if (mode == PRINT_IT)
+        ft_printf("sa\n");
 }
 
-void    rra(t_list_a **list)
+void    rra(t_list_a **list, int mode)
 {
     t_list_a *node;
     t_list_a *prev;
@@ -89,9 +92,10 @@ void    rra(t_list_a **list)
     (*list)->next = node;
     (*list)->prev = NULL;
     prev->next = NULL;
-    ft_printf("rra\n");
+    if (mode == PRINT_IT)
+        ft_printf("rra\n");
 }
-void    ra(t_list_a **list)
+void    ra(t_list_a **list, int mode)
 {
     t_list_a *first_temp;
     t_list_a *last_temp;
@@ -102,5 +106,6 @@ void    ra(t_list_a **list)
     last_temp->next = first_temp;
     first_temp->prev = last_temp;
     first_temp->next = NULL;
-    ft_printf("ra\n");
+    if (mode == PRINT_IT)
+        ft_printf("ra\n");
 }

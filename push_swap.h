@@ -27,6 +27,10 @@
 #ifndef PUSH_B
 #define PUSH_B 3
 #endif
+
+#ifndef PRINT_IT
+#define PRINT_IT 4
+#endif
 typedef struct s_list_a
 {
     int number;
@@ -58,6 +62,7 @@ size_t ft_lstsize(t_list_a *list);
 t_list_a *ft_lstnew(int number, int index, t_list_a *target_node);
 void print_list(t_list_a *list);
 t_list_a *copy_list(t_list_a *list);
+void	ft_lstclear(t_list_a **lst);
 //SORTS
 void    sort_two(t_list_a **list);
 void    sort_three(t_list_a **list);
@@ -75,10 +80,10 @@ void    sort_smallest(t_list_a **list_a);
 void    from_b_to_a(t_list_a **list_a, t_list_a **list_b);
 void    from_a_to_b(t_list_a **list_a, t_list_a **list_b);
 //OPERATIONS
-void    sa(t_list_a **list);
-void    rra(t_list_a **list);
-void    ra(t_list_a **list);
-void    pb(t_list_a **list_a, t_list_a **list_b);
-void    pa(t_list_a **list_a, t_list_a **list_b);
+void    sa(t_list_a **list, int mode);
+void    rra(t_list_a **list, int mode);
+void    ra(t_list_a **list, int mode);
+void    pb(t_list_a **list_a, t_list_a **list_b, int mode);
+void    pa(t_list_a **list_a, t_list_a **list_b, int mode);
 #endif
 

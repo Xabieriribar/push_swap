@@ -31,5 +31,6 @@ int main(int argc, char **argv)
         if (ft_lstsize(list_a) >= 4)
             sort_turks(&list_a, &list_b);
     }
+    ft_lstclear(&list_b);
     return (0);
 }

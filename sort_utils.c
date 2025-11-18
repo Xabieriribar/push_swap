@@ -15,7 +15,7 @@ bool    swap_two(t_list_a **list)
 {
     if ((*list)->number > (*list)->next->number)
     {
-        sa(list);
+        sa(list, PRINT_IT);
         return (true);
     }
     return (false);
@@ -48,13 +48,13 @@ void    put_biggest_in_bottom(t_list_a **list)
     find_biggest_index(*list, &index);
     if (index == 1)
     {
-        rra(list);
+        rra(list, PRINT_IT);
     }
     else
     {
-        ra(list);
+        ra(list, PRINT_IT);
         if (!ft_is_sorted(*list))
-            sa(list);
+            sa(list, PRINT_IT);
     }
 
 }

@@ -16,6 +16,28 @@
 //     list->index = index;
 // }
 
+
+void	ft_lstdelone(t_list_a *lst)
+{
+	if (!lst)
+		return ;
+	free(lst);
+}
+void	ft_lstclear(t_list_a **lst)
+{
+	t_list_a	*temp;
+
+	if (!lst)
+		return ;
+	while (*lst)
+	{
+		temp = (*lst)->next;
+		ft_lstdelone(*lst);
+		*lst = temp;
+	}
+	free(*lst);
+	*lst = NULL;
+}
 t_list_a *ft_lstnew(int number, int index, t_list_a *target_node)
 {
     t_list_a *new;
