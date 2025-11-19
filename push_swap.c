@@ -5,11 +5,9 @@ int main(int argc, char **argv)
     t_list_a    *list_a;
     t_list_a    *list_b;
     t_data      *data;
-    size_t lstsize;
 
     list_a = NULL;
     list_b = NULL;
-    lstsize = 0;
     data = malloc(sizeof(struct s_data));
     if (!data)
         return (0);
@@ -18,8 +16,8 @@ int main(int argc, char **argv)
     data->mode = 0;
     if (!ft_parse_input(data, &numbers))
     {
-        ft_printf("Error");
-        return (false);
+        write(2, "Error", 5);
+        return (0);
     }
     make_list(&list_a, numbers, data->argc);
     if (!ft_is_sorted(list_a))

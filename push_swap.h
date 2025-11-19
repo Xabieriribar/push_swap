@@ -4,10 +4,15 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <limits.h>
+#include <unistd.h>
 #include "stdio.h"
 
 #ifndef MAX_SIZE
 #define MAX_SIZE 10000
+#endif
+
+#ifndef MAX
+#define MAX(a, b) (((a) > (b)) ? (a) : (b));
 #endif
 
 //MACROS FOR TARGET_NODE
@@ -58,7 +63,7 @@ int	ft_atoi(const char *nptr);
 int	ft_printf(const char *format, ...);
 //LISTS
 t_list_a *ft_lstlast(t_list_a *list);
-size_t ft_lstsize(t_list_a *list);
+int ft_lstsize(t_list_a *list);
 t_list_a *ft_lstnew(int number, int index, t_list_a *target_node);
 void print_list(t_list_a *list);
 t_list_a *copy_list(t_list_a *list);
@@ -79,11 +84,16 @@ t_list_a *find_smallest(t_list_a *list);
 void    sort_smallest(t_list_a **list_a);
 void    from_b_to_a(t_list_a **list_a, t_list_a **list_b);
 void    from_a_to_b(t_list_a **list_a, t_list_a **list_b);
+t_list_a *return_lowest_cost_node(t_list_a *list_a);
 //OPERATIONS
 void    sa(t_list_a **list, int mode);
 void    rra(t_list_a **list, int mode);
 void    ra(t_list_a **list, int mode);
 void    pb(t_list_a **list_a, t_list_a **list_b, int mode);
 void    pa(t_list_a **list_a, t_list_a **list_b, int mode);
+//FIND FUNCTIONS
+t_list_a *find_next_biggest(t_list_a *list_a, int source_number);
+t_list_a *find_next_smallest(t_list_a *list_b, int source_number);
+t_list_a *find_node_with_smallest_cost(t_list_a **list_a, t_list_a **list_b);
 #endif
 

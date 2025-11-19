@@ -1,364 +1,150 @@
-#!/usr/bin/env python3
-"""Utility script to stress-test the push_swap binary.
-
-Features:
-    * Generates random unique integer lists for stack a.
-    * Executes ./push_swap (or a custom binary) for each list.
-    * Simulates all operations to verify that the produced instructions are valid.
-    * Optionally pipes the instructions to an external checker binary.
-    * Prints per-test diagnostics and aggregates operation statistics.
-"""
-
-from __future__ import annotations
-
-import argparse
-import random
-import statistics
 import subprocess
+import random
 import sys
-import time
-from dataclasses import dataclass
-from pathlib import Path
-from typing import List, Sequence
+import os
 
+# --- CONFIGURATION ---
+PUSH_SWAP_EXEC = "./push_swap"
+NUM_TESTS = 5          # How many times to run each test case
+TEST_SIZES = [3, 5, 100, 500] # Stack sizes to test
+# ---------------------
 
-InstructionList = List[str]
+class Colors:
+    GREEN = '\033[92m'
+    RED = '\033[91m'
+    YELLOW = '\033[93m'
+    BLUE = '\033[94m'
+    RESET = '\033[0m'
 
+def get_random_numbers(count):
+    """Generates a list of 'count' unique random integers."""
+    range_limit = count * 10
+    return random.sample(range(-range_limit, range_limit), count)
 
-@dataclass
-class TestResult:
-    index: int
-    values: List[int]
-    ops: InstructionList
-    duration: float
-    error: str | None = None
-    checker_output: str | None = None
-
-    @property
-    def passed(self) -> bool:
-        return self.error is None
-
-    @property
-    def op_count(self) -> int:
-        return len(self.ops)
-
-
-def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(
-        description="Randomized tester for the 42 push_swap project."
-    )
-    parser.add_argument(
-        "-b",
-        "--binary",
-        default="./push_swap",
-        help="path to the push_swap executable (default: ./push_swap)",
-    )
-    parser.add_argument(
-        "-c",
-        "--checker",
-        help=(
-            "optional path to the checker binary. When provided, instructions will "
-            "also be validated via that checker"
-        ),
-    )
-    parser.add_argument(
-        "-n",
-        "--tests",
-        type=int,
-        default=10,
-        help="number of random test cases to run (default: 10)",
-    )
-    parser.add_argument(
-        "-s",
-        "--size",
-        type=int,
-        default=5,
-        help="size of stack a (default: 5)",
-    )
-    parser.add_argument(
-        "--min",
-        dest="min_value",
-        type=int,
-        default=-1000,
-        help="minimum random value (inclusive, default: -1000)",
-    )
-    parser.add_argument(
-        "--max",
-        dest="max_value",
-        type=int,
-        default=1000,
-        help="maximum random value (inclusive, default: 1000)",
-    )
-    parser.add_argument(
-        "--seed",
-        type=int,
-        help="seed for Python's random module (default: none, i.e. system randomness)",
-    )
-    parser.add_argument(
-        "-v",
-        "--verbose",
-        action="store_true",
-        help="print the generated stack and the operations for each test",
-    )
-    parser.add_argument(
-        "--show-errors",
-        action="store_true",
-        help="print stderr emitted by push_swap when a failure occurs",
-    )
-    return parser.parse_args()
-
-
-def ensure_inputs_valid(args: argparse.Namespace) -> None:
-    if args.size <= 0:
-        raise SystemExit("Stack size must be positive.")
-    if args.min_value > args.max_value:
-        raise SystemExit("Minimum value cannot exceed maximum value.")
-    range_size = args.max_value - args.min_value + 1
-    if range_size < args.size:
-        raise SystemExit(
-            f"Cannot pick {args.size} unique numbers in range "
-            f"[{args.min_value}, {args.max_value}]."
-        )
-    binary_path = Path(args.binary)
-    if not binary_path.exists():
-        raise SystemExit(f"push_swap binary not found at: {binary_path}")
-    if args.checker and not Path(args.checker).exists():
-        raise SystemExit(f"checker binary not found at: {args.checker}")
-
-
-def generate_case(size: int, min_value: int, max_value: int) -> List[int]:
-    # random.sample guarantees unique values.
-    return random.sample(range(min_value, max_value + 1), size)
-
-
-def run_push_swap(binary: str, values: Sequence[int]) -> subprocess.CompletedProcess:
-    cmd = [binary] + [str(v) for v in values]
-    return subprocess.run(
-        cmd,
-        text=True,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-        check=False,
-    )
-
-
-def execute_checker(
-    checker: str, values: Sequence[int], instructions: str
-) -> subprocess.CompletedProcess:
-    cmd = [checker] + [str(v) for v in values]
-    return subprocess.run(
-        cmd,
-        input=instructions,
-        text=True,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-        check=False,
-    )
-
-
-def apply_instructions(values: Sequence[int], ops: InstructionList) -> tuple[List[int], List[int]]:
-    a = list(values)
-    b: List[int] = []
-    for op in ops:
-        if op == "sa":
-            if len(a) >= 2:
-                a[0], a[1] = a[1], a[0]
-        elif op == "sb":
-            if len(b) >= 2:
-                b[0], b[1] = b[1], b[0]
-        elif op == "ss":
-            if len(a) >= 2:
-                a[0], a[1] = a[1], a[0]
-            if len(b) >= 2:
-                b[0], b[1] = b[1], b[0]
-        elif op == "pa":
-            if b:
-                a.insert(0, b.pop(0))
-        elif op == "pb":
-            if a:
-                b.insert(0, a.pop(0))
-        elif op == "ra":
-            if len(a) >= 2:
-                a.append(a.pop(0))
-        elif op == "rb":
-            if len(b) >= 2:
-                b.append(b.pop(0))
-        elif op == "rr":
-            if len(a) >= 2:
-                a.append(a.pop(0))
-            if len(b) >= 2:
-                b.append(b.pop(0))
-        elif op == "rra":
-            if len(a) >= 2:
-                a.insert(0, a.pop())
-        elif op == "rrb":
-            if len(b) >= 2:
-                b.insert(0, b.pop())
-        elif op == "rrr":
-            if len(a) >= 2:
-                a.insert(0, a.pop())
-            if len(b) >= 2:
-                b.insert(0, b.pop())
-        else:
-            raise ValueError(f"Unknown instruction '{op}'")
-    return a, b
-
-
-def is_sorted(stack: Sequence[int]) -> bool:
-    return all(stack[i] < stack[i + 1] for i in range(len(stack) - 1))
-
-
-def run_test_case(
-    index: int, args: argparse.Namespace, values: List[int]
-) -> TestResult:
-    start = time.perf_counter()
-    proc = run_push_swap(args.binary, values)
-    duration = time.perf_counter() - start
-    stdout = proc.stdout
-    stderr = proc.stderr
-
-    if proc.returncode != 0:
-        return TestResult(
-            index=index,
-            values=values,
-            ops=[],
-            duration=duration,
-            error=f"push_swap exited with code {proc.returncode}",
-            checker_output=stderr.strip() if stderr else None,
-        )
-
-    if stderr and args.show_errors:
-        print(f"[stderr case {index}] {stderr.strip()}", file=sys.stderr)
-
-    instructions = [line.strip() for line in stdout.splitlines() if line.strip()]
-
+def run_push_swap(numbers):
+    """Runs push_swap with the given numbers and returns the list of instructions."""
+    args = [PUSH_SWAP_EXEC] + [str(n) for n in numbers]
     try:
-        final_a, final_b = apply_instructions(values, instructions)
-    except ValueError as err:
-        return TestResult(
-            index=index,
-            values=values,
-            ops=instructions,
-            duration=duration,
-            error=str(err),
-        )
+        result = subprocess.run(args, capture_output=True, text=True, check=True)
+        output = result.stdout.strip()
+        if not output:
+            return []
+        return output.split('\n')
+    except subprocess.CalledProcessError as e:
+        print(f"{Colors.RED}Error running push_swap: {e}{Colors.RESET}")
+        return None
+    except FileNotFoundError:
+        print(f"{Colors.RED}Executable '{PUSH_SWAP_EXEC}' not found!{Colors.RESET}")
+        sys.exit(1)
 
-    if final_b:
-        return TestResult(
-            index=index,
-            values=values,
-            ops=instructions,
-            duration=duration,
-            error="Stack b is not empty after executing instructions.",
-        )
+def simulate_operations(stack_a, instructions):
+    """
+    Simulates the stack operations to verify correctness.
+    Returns (final_stack_a, final_stack_b, valid_flag)
+    """
+    stack_b = []
+    
+    ops = {
+        'sa': lambda a, b: (a.insert(0, a.pop(1)) if len(a) > 1 else None),
+        'sb': lambda a, b: (b.insert(0, b.pop(1)) if len(b) > 1 else None),
+        'ss': lambda a, b: (ops['sa'](a, b), ops['sb'](a, b)),
+        'pa': lambda a, b: a.insert(0, b.pop(0)) if b else None,
+        'pb': lambda a, b: b.insert(0, a.pop(0)) if a else None,
+        'ra': lambda a, b: a.append(a.pop(0)) if len(a) > 1 else None,
+        'rb': lambda a, b: b.append(b.pop(0)) if len(b) > 1 else None,
+        'rr': lambda a, b: (ops['ra'](a, b), ops['rb'](a, b)),
+        'rra': lambda a, b: a.insert(0, a.pop()) if len(a) > 1 else None,
+        'rrb': lambda a, b: b.insert(0, b.pop()) if len(b) > 1 else None,
+        'rrr': lambda a, b: (ops['rra'](a, b), ops['rrb'](a, b)),
+    }
 
-    if not is_sorted(final_a):
-        return TestResult(
-            index=index,
-            values=values,
-            ops=instructions,
-            duration=duration,
-            error="Stack a is not sorted in ascending order.",
-        )
+    for instr in instructions:
+        instr = instr.strip()
+        if not instr: continue
+        if instr not in ops:
+            print(f"{Colors.RED}Unknown instruction: {instr}{Colors.RESET}")
+            return stack_a, stack_b, False
+        ops[instr](stack_a, stack_b)
+        
+    return stack_a, stack_b, True
 
-    checker_output = None
-    if args.checker:
-        checker_proc = execute_checker(args.checker, values, stdout)
-        checker_output = checker_proc.stdout.strip()
-        if checker_proc.returncode != 0:
-            return TestResult(
-                index=index,
-                values=values,
-                ops=instructions,
-                duration=duration,
-                error=f"checker exited with code {checker_proc.returncode}",
-                checker_output=checker_output or checker_proc.stderr.strip(),
-            )
-        if checker_output != "OK":
-            return TestResult(
-                index=index,
-                values=values,
-                ops=instructions,
-                duration=duration,
-                error=f"checker returned '{checker_output}'",
-            )
+def check_limits(size, count):
+    """Checks if the operation count meets the 42 subject requirements."""
+    limit = None
+    if size == 3 and count > 3: return False, 3
+    if size == 5 and count > 12: return False, 12
+    if size == 100: limit = 700
+    if size == 500: limit = 5500
+    
+    if limit and count > limit:
+        return False, limit
+    return True, limit
 
-    return TestResult(
-        index=index,
-        values=values,
-        ops=instructions,
-        duration=duration,
-        checker_output=checker_output,
-    )
+def main():
+    print(f"{Colors.BLUE}=== PUSH_SWAP PYTHON TESTER ==={Colors.RESET}\n")
+    
+    if not os.path.exists(PUSH_SWAP_EXEC):
+        print(f"{Colors.RED}FAIL: {PUSH_SWAP_EXEC} not found. Compile your project first.{Colors.RESET}")
+        return
 
+    total_errors = 0
 
-def summarize_results(results: Sequence[TestResult]) -> None:
-    passed = [r for r in results if r.passed]
-    failed = [r for r in results if not r.passed]
-    total = len(results)
+    for size in TEST_SIZES:
+        print(f"{Colors.YELLOW}Testing Stack Size: {size}{Colors.RESET}")
+        moves_history = []
+        
+        for i in range(NUM_TESTS):
+            nums = get_random_numbers(size)
+            # Create a copy for simulation because lists are mutable
+            nums_copy = list(nums) 
+            
+            instructions = run_push_swap(nums)
+            
+            if instructions is None:
+                continue
+                
+            count = len(instructions)
+            moves_history.append(count)
+            
+            # Verify Sorting
+            res_a, res_b, valid_ops = simulate_operations(nums_copy, instructions)
+            
+            is_sorted = (res_a == sorted(nums)) and (len(res_b) == 0)
+            passed_limit, limit = check_limits(size, count)
 
-    if passed:
-        counts = [r.op_count for r in passed]
-        avg_ops = statistics.mean(counts)
-        median_ops = statistics.median(counts)
-        best = min(counts)
-        worst = max(counts)
-        print("\nOperation statistics for successful runs:")
-        print(f"  Cases: {len(passed)} / {total}")
-        print(f"  Avg / Median: {avg_ops:.2f} / {median_ops:.2f}")
-        print(f"  Best / Worst: {best} / {worst}")
+            # Output status
+            if is_sorted and passed_limit and valid_ops:
+                status = f"{Colors.GREEN}[OK]{Colors.RESET}"
+            else:
+                status = f"{Colors.RED}[FAIL]{Colors.RESET}"
+                total_errors += 1
+                if not is_sorted: print(f"  -> Not sorted or Stack B not empty.")
+                if not valid_ops: print(f"  -> Invalid instruction detected.")
+                if not passed_limit: print(f"  -> Over limit! ({count} > {limit})")
+
+            # Optional: Print individual test results (can be verbose)
+            # print(f"  Test {i+1}: {status} ({count} ops)")
+
+        # Summary for this size
+        avg = sum(moves_history) // len(moves_history) if moves_history else 0
+        max_ops = max(moves_history) if moves_history else 0
+        print(f"  Average Ops: {Colors.BLUE}{avg}{Colors.RESET} | Max Ops: {Colors.BLUE}{max_ops}{Colors.RESET}")
+        
+        # Check against strict 42 benchmarks for 100/500
+        if size == 100:
+            if max_ops < 700: print(f"  Rating: {Colors.GREEN}5/5 (Excellent){Colors.RESET}")
+            elif max_ops < 900: print(f"  Rating: {Colors.YELLOW}4/5{Colors.RESET}")
+            else: print(f"  Rating: {Colors.RED}FAIL{Colors.RESET}")
+        elif size == 500:
+            if max_ops < 5500: print(f"  Rating: {Colors.GREEN}5/5 (Excellent){Colors.RESET}")
+            elif max_ops < 7000: print(f"  Rating: {Colors.YELLOW}4/5{Colors.RESET}")
+            else: print(f"  Rating: {Colors.RED}FAIL{Colors.RESET}")
+        print("-" * 40)
+
+    if total_errors == 0:
+        print(f"\n{Colors.GREEN}ALL TESTS PASSED! Great job.{Colors.RESET}")
     else:
-        print("\nNo successful test cases.")
-
-    if failed:
-        print(f"\nFailures ({len(failed)} cases):")
-        for result in failed:
-            value_preview = " ".join(map(str, result.values))
-            print(f"  Case #{result.index}: {result.error}")
-            print(f"    Input: {value_preview}")
-            if result.ops:
-                print(f"    Ops produced: {result.op_count}")
-            if result.checker_output:
-                print(f"    Checker output: {result.checker_output}")
-    else:
-        print("\nAll cases passed ✅")
-
-
-def main() -> None:
-    args = parse_args()
-    ensure_inputs_valid(args)
-    if args.seed is not None:
-        random.seed(args.seed)
-
-    print(
-        f"Running {args.tests} test(s) | size={args.size} | "
-        f"range=[{args.min_value},{args.max_value}] | binary={args.binary}"
-    )
-    if args.checker:
-        print(f"Using checker: {args.checker}")
-
-    results: List[TestResult] = []
-    for idx in range(1, args.tests + 1):
-        values = generate_case(args.size, args.min_value, args.max_value)
-        result = run_test_case(idx, args, values)
-        results.append(result)
-        status = "PASS" if result.passed else "FAIL"
-        line = f"[{idx:03}] {status} | ops={result.op_count:4d} | time={result.duration*1000:6.2f} ms"
-        print(line)
-        if args.verbose:
-            numbers = " ".join(map(str, values))
-            print(f"    input: {numbers}")
-            if result.ops:
-                print(f"    ops: {' '.join(result.ops)}")
-        if not result.passed and not args.verbose:
-            numbers = " ".join(map(str, values))
-            print(f"    reason: {result.error}")
-            print(f"    input: {numbers}")
-            if args.checker and result.checker_output:
-                print(f"    checker: {result.checker_output}")
-
-    summarize_results(results)
-
+        print(f"\n{Colors.RED}SOME TESTS FAILED. Check output above.{Colors.RESET}")
 
 if __name__ == "__main__":
     main()

@@ -3,7 +3,7 @@ CC      := cc
 FLAGS   := -Wall -Wextra -Werror -g
 RM      := rm -f
 
-SRCS    := push_swap.c parser.c list_operations.c stack_operations.c sort_operations.c sort_utils.c turk_utils.c
+SRCS    := push_swap.c parser.c list_operations.c stack_operations.c sort_operations.c sort_utils.c turk_utils.c find_utils.c
 OBJS    := $(SRCS:.c=.o)
 
 all: $(NAME)

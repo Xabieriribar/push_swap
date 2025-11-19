@@ -91,9 +91,9 @@ void    ft_fill_list(t_list_a **list, int *numbers, int argc)
     }
 }
 
-size_t ft_lstsize(t_list_a *list)
+int ft_lstsize(t_list_a *list)
 {
-    size_t  len;
+    int len;
 
     len = 0;
     while (list)

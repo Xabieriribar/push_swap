@@ -34,8 +34,6 @@ void    sort_turks(t_list_a **list_a, t_list_a **list_b)
         sort_three(list_a);
     }
     update_indexes(list_a, list_b);
-    t_list_a *temp_b = *list_b;
-    temp_b = *list_b;
     from_b_to_a(list_a, list_b);
     sort_smallest(list_a);
     update_indexes(list_a, list_b);
