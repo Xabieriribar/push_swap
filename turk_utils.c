@@ -102,8 +102,6 @@ void    is_target_below_or_above(t_list_a *target_node, t_list_a **list_a, t_lis
         {
             if (print == PRINT_IT)
                 ra(list_a, PRINT_IT);
-            else
-                ra(list_a, 0);
             update_indexes(list_a, NULL);
         }
         if (mode == PUSH_A)
@@ -117,13 +115,11 @@ void    is_target_below_or_above(t_list_a *target_node, t_list_a **list_a, t_lis
         {
             if (print == PRINT_IT)
                 rra(list_a, PRINT_IT);
-            else
-                rra(list_a, 0);
             update_indexes(list_a, list_b);
         }
         if (mode == PUSH_A)
             pa(list_a, list_b, PRINT_IT);
-        else
+        else if (mode == PUSH_B)
             pb(list_a, list_b, PRINT_IT);
     }
 }
@@ -160,22 +156,125 @@ void    assign_target_nodes_to_a(t_list_a **list_a, t_list_a **list_b)
 t_list_a *return_lowest_cost_node(t_list_a *list_a)
 {
     t_list_a *lowest_cost_node;
-    int         mode;
 
-    mode = 0;
-    lowest_cost_node = list_a;
+    lowest_cost_node = list_a; // Inicializa con el primer nodo
+
     while (list_a != NULL)
     {
-        if (lowest_cost_node->cost > list_a->cost && (lowest_cost_node->index < list_a->index || mode == 0))
-        {
-            mode = 1;
+        // 1. CONDICIÓN PRINCIPAL: Si el costo actual es estrictamente menor
+        if (list_a->cost < lowest_cost_node->cost)
             lowest_cost_node = list_a;
-        }
+        
+        // 2. CONDICIÓN DE DESEMPATE: Si los costos son iguales, elige el de menor índice
+        else if (list_a->cost == lowest_cost_node->cost && list_a->index < lowest_cost_node->index)
+            lowest_cost_node = list_a;
+
         list_a = list_a->next;
     }
     return (lowest_cost_node);
 }
 
+void    push_to_top(t_list_a *smallest_to_push, t_list_a **list_a, t_list_a **list_b)
+{
+    if (calculate_median(*list_a) >= smallest_to_push->index && calculate_median(*list_b) >= smallest_to_push->target_node->index)
+    {
+        if (smallest_to_push->index == 0 && smallest_to_push->target_node->index != 0)
+        {
+            while (smallest_to_push->target_node->index != 0)
+            {
+                rb(list_b, PRINT_IT);
+                update_indexes(list_a, list_b);
+            }
+        }
+        else if (smallest_to_push->target_node->index == 0 && smallest_to_push->index != 0)
+        {
+            while(smallest_to_push->index != 0)
+            {
+                ra(list_a, PRINT_IT);
+                update_indexes(list_a, list_b);
+            }
+        }
+        else
+        {
+            while (smallest_to_push->index != 0 && smallest_to_push->target_node->index != 0)
+            {
+                rrr(list_a, list_b);
+                update_indexes(list_a, list_b);
+            }
+            while (smallest_to_push->index != 0)
+            {
+                ra(list_a, PRINT_IT);
+                update_indexes(list_a, list_b);
+            }
+            while (smallest_to_push->target_node->index != 0)
+            {
+                rb(list_b, PRINT_IT);
+                update_indexes(list_a, list_b);
+            }
+        }
+    }
+    else if (calculate_median(*list_a) < smallest_to_push->index && calculate_median(*list_b) < smallest_to_push->target_node->index)
+    {
+        if (smallest_to_push->index != ft_lstsize(*list_a) && smallest_to_push->target_node->index != ft_lstsize(*list_b))
+        {
+            while (smallest_to_push->index != ft_lstsize(*list_a) + 1 && smallest_to_push->index != ft_lstsize(*list_b) + 1)
+            {
+                rrr(list_a, list_b);
+                update_indexes(list_a, list_b);
+            }
+            while (smallest_to_push->index != ft_lstsize(*list_a) + 1)
+            {
+                rra(list_a, PRINT_IT);
+                update_indexes(list_a, list_b);
+            }
+            while (smallest_to_push->target_node->index != ft_lstsize(*list_b) + 1)
+            {
+                rrb(list_b, PRINT_IT);
+                update_indexes(list_a, list_b);
+            }
+        }
+        else if (smallest_to_push->index == ft_lstsize(*list_a))
+        {
+            rra(list_a, PRINT_IT);
+            update_indexes(list_a, list_b);
+            while (smallest_to_push->target_node->index != ft_lstsize(*list_b) + 1)
+            {
+                rrb(list_b, PRINT_IT);
+                update_indexes(list_a, list_b);
+            }
+        }
+        else if (smallest_to_push->index == ft_lstsize(*list_a))
+        {
+            rrb(list_b, PRINT_IT);
+            update_indexes(list_a, list_b);
+            while (smallest_to_push->index != ft_lstsize(*list_a) + 1)
+            {
+                rra(list_a, PRINT_IT);
+                update_indexes(list_a, list_b);
+            }
+        }
+    }
+    else if (calculate_median(*list_a) >= smallest_to_push->index && calculate_median(*list_b) < smallest_to_push->target_node->index)
+    {
+        while (smallest_to_push->index != 0)
+            ra(list_a, PRINT_IT);
+        while (smallest_to_push->target_node->index != 0)
+            rrb(list_b, PRINT_IT);
+    }
+    else
+    {
+        while (smallest_to_push->index != 0)
+        {
+            rra(list_a, PRINT_IT);
+            update_indexes(list_a, list_b);
+        }
+        while (smallest_to_push->target_node->index != 0)
+        {
+            rb(list_b, PRINT_IT);
+            update_indexes(list_a, list_b);
+        }
+    }
+}
 void    from_a_to_b(t_list_a **list_a, t_list_a **list_b)
 {
     int mode;
@@ -196,9 +295,8 @@ void    from_a_to_b(t_list_a **list_a, t_list_a **list_b)
         assign_target_nodes_to_a(list_a, list_b);
         update_indexes(list_a, list_b);
         smallest_to_push = find_node_with_smallest_cost(list_a, list_b);
-        if (smallest_to_push->index != 0)
-            pb(list_a, list_b, PRINT_IT);
-        else
-            is_target_below_or_above(smallest_to_push, list_a, list_b, PUSH_B, 0);
+        update_indexes(list_a, list_b);
+        push_to_top(smallest_to_push, list_a, list_b);
+        pb(list_a, list_b, PRINT_IT);
     }
 }

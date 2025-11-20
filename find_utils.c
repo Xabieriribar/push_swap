@@ -162,20 +162,30 @@ t_list_a *find_cost(t_list_a **list_a, t_list_a **list_b)
     while (temp_list != NULL)
     {
         target_b = temp_list->target_node;
-        if (calculate_median(*list_a) >= temp_list->index && calculate_median(*list_b) >= target_b->index)
-        {
-            temp_list->cost = MAX(temp_list->index, target_b->index);
-        }
-        else if (calculate_median(*list_a) < temp_list->index && calculate_median(*list_b) < target_b->index)
-        {
-            temp_list->cost = MAX(ft_lstsize(*list_a)- temp_list->index, ft_lstsize(*list_b) - target_b->index);
-        }
-        else
-            temp_list->cost = temp_list->index + target_b->index;
+        // 1. Calcula las 4 rutas combinadas (Usando variables auxiliares)
+        int cost_ra = temp_list->index; 
+        int cost_rb = target_b->index;
+        int cost_rra = len_a - temp_list->index; 
+        int cost_rrb = len_b - target_b->index;
+        
+        // Costo Sincronizado UP/UP
+        int cost_1 = MAX(cost_ra, cost_rb);
+        // Costo Sincronizado DOWN/DOWN
+        int cost_2 = MAX(cost_rra, cost_rrb);
+        
+        // Costo Oposición A up / B down
+        int cost_3 = cost_ra + cost_rrb;
+        // Costo Oposición A down / B up
+        int cost_4 = cost_rra + cost_rb;
+        
+        // 2. Asigna el MÍNIMO de las 4 opciones
+        temp_list->cost = MIN(MIN(cost_1, cost_2), MIN(cost_3, cost_4));
+
         temp_list = temp_list->next;
     }
     return (head_temp_list);
 }
+
 t_list_a *find_node_with_smallest_cost(t_list_a **list_a, t_list_a **list_b)
 {
     t_list_a *temp_list;

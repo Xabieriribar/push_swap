@@ -95,6 +95,23 @@ void    rra(t_list_a **list, int mode)
     if (mode == PRINT_IT)
         ft_printf("rra\n");
 }
+
+void    rrb(t_list_a **list, int mode)
+{
+    t_list_a *node;
+    t_list_a *prev;
+
+    node = *list;
+    prev = ft_lstlast(*list);
+    prev = prev->prev;
+    *list = ft_lstlast(*list);
+    node->prev = *list;
+    (*list)->next = node;
+    (*list)->prev = NULL;
+    prev->next = NULL;
+    if (mode == PRINT_IT)
+        ft_printf("rrb\n");
+}
 void    ra(t_list_a **list, int mode)
 {
     t_list_a *first_temp;
@@ -108,4 +125,29 @@ void    ra(t_list_a **list, int mode)
     first_temp->next = NULL;
     if (mode == PRINT_IT)
         ft_printf("ra\n");
+}
+
+void    rb(t_list_a **list, int mode)
+{
+    t_list_a *first_temp;
+    t_list_a *last_temp;
+
+    first_temp = (*list);
+    last_temp = ft_lstlast(*list);
+    *list = (*list)->next;
+    last_temp->next = first_temp;
+    first_temp->prev = last_temp;
+    first_temp->next = NULL;
+    if (mode == PRINT_IT)
+        ft_printf("rb\n");
+}
+void rr(t_list_a **list_a, t_list_a **list_b)
+{
+    ra(list_a, 0);
+    rb(list_b, 0);
+}
+void rrr(t_list_a **list_a, t_list_a **list_b)
+{
+    rra(list_a, 0);
+    rrb(list_b, 0);
 }

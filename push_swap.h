@@ -11,8 +11,12 @@
 #define MAX_SIZE 10000
 #endif
 
+#ifndef MIN
+#define MIN(a, b) (((a) > (b)) ? b : a)
+#endif
+
 #ifndef MAX
-#define MAX(a, b) (((a) > (b)) ? (a) : (b));
+#define MAX(a, b) (((a) > (b)) ? a : b);
 #endif
 
 //MACROS FOR TARGET_NODE
@@ -91,9 +95,12 @@ void    rra(t_list_a **list, int mode);
 void    ra(t_list_a **list, int mode);
 void    pb(t_list_a **list_a, t_list_a **list_b, int mode);
 void    pa(t_list_a **list_a, t_list_a **list_b, int mode);
+void rr(t_list_a **list_a, t_list_a **list_b);
+void rrr(t_list_a **list_a, t_list_a **list_b);
+void    rrb(t_list_a **list, int mode);
+void    rb(t_list_a **list, int mode);
 //FIND FUNCTIONS
 t_list_a *find_next_biggest(t_list_a *list_a, int source_number);
 t_list_a *find_next_smallest(t_list_a *list_b, int source_number);
 t_list_a *find_node_with_smallest_cost(t_list_a **list_a, t_list_a **list_b);
 #endif
-

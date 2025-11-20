@@ -5,7 +5,7 @@ import os
 
 # --- CONFIGURATION ---
 PUSH_SWAP_EXEC = "./push_swap"
-NUM_TESTS = 5          # How many times to run each test case
+NUM_TESTS = 100          # How many times to run each test case
 TEST_SIZES = [3, 5, 100, 500] # Stack sizes to test
 # ---------------------
 
