@@ -178,100 +178,67 @@ void    push_to_top(t_list_a *smallest_to_push, t_list_a **list_a, t_list_a **li
 {
     if (calculate_median(*list_a) >= smallest_to_push->index && calculate_median(*list_b) >= smallest_to_push->target_node->index)
     {
-        if (smallest_to_push->index == 0 && smallest_to_push->target_node->index != 0)
+        while (smallest_to_push->index != 0 && smallest_to_push->target_node->index != 0)   
         {
-            while (smallest_to_push->target_node->index != 0)
-            {
-                rb(list_b, PRINT_IT);
-                update_indexes(list_a, list_b);
-            }
-        }
-        else if (smallest_to_push->target_node->index == 0 && smallest_to_push->index != 0)
-        {
-            while(smallest_to_push->index != 0)
-            {
-                ra(list_a, PRINT_IT);
-                update_indexes(list_a, list_b);
-            }
-        }
-        else
-        {
-            while (smallest_to_push->index != 0 && smallest_to_push->target_node->index != 0)
-            {
-                rrr(list_a, list_b);
-                update_indexes(list_a, list_b);
-            }
-            while (smallest_to_push->index != 0)
-            {
-                ra(list_a, PRINT_IT);
-                update_indexes(list_a, list_b);
-            }
-            while (smallest_to_push->target_node->index != 0)
-            {
-                rb(list_b, PRINT_IT);
-                update_indexes(list_a, list_b);
-            }
-        }
-    }
-    else if (calculate_median(*list_a) < smallest_to_push->index && calculate_median(*list_b) < smallest_to_push->target_node->index)
-    {
-        if (smallest_to_push->index != ft_lstsize(*list_a) && smallest_to_push->target_node->index != ft_lstsize(*list_b))
-        {
-            while (smallest_to_push->index != ft_lstsize(*list_a) + 1 && smallest_to_push->index != ft_lstsize(*list_b) + 1)
-            {
-                rrr(list_a, list_b);
-                update_indexes(list_a, list_b);
-            }
-            while (smallest_to_push->index != ft_lstsize(*list_a) + 1)
-            {
-                rra(list_a, PRINT_IT);
-                update_indexes(list_a, list_b);
-            }
-            while (smallest_to_push->target_node->index != ft_lstsize(*list_b) + 1)
-            {
-                rrb(list_b, PRINT_IT);
-                update_indexes(list_a, list_b);
-            }
-        }
-        else if (smallest_to_push->index == ft_lstsize(*list_a))
-        {
-            rra(list_a, PRINT_IT);
+            rr(list_a, list_b);
             update_indexes(list_a, list_b);
-            while (smallest_to_push->target_node->index != ft_lstsize(*list_b) + 1)
-            {
-                rrb(list_b, PRINT_IT);
-                update_indexes(list_a, list_b);
-            }
         }
-        else if (smallest_to_push->index == ft_lstsize(*list_a))
-        {
-            rrb(list_b, PRINT_IT);
-            update_indexes(list_a, list_b);
-            while (smallest_to_push->index != ft_lstsize(*list_a) + 1)
-            {
-                rra(list_a, PRINT_IT);
-                update_indexes(list_a, list_b);
-            }
-        }
-    }
-    else if (calculate_median(*list_a) >= smallest_to_push->index && calculate_median(*list_b) < smallest_to_push->target_node->index)
-    {
         while (smallest_to_push->index != 0)
+        {
             ra(list_a, PRINT_IT);
-        while (smallest_to_push->target_node->index != 0)
-            rrb(list_b, PRINT_IT);
-    }
-    else
-    {
-        while (smallest_to_push->index != 0)
-        {
-            rra(list_a, PRINT_IT);
             update_indexes(list_a, list_b);
         }
         while (smallest_to_push->target_node->index != 0)
         {
             rb(list_b, PRINT_IT);
             update_indexes(list_a, list_b);
+        }
+    }
+    else if (calculate_median(*list_a) < smallest_to_push->index && calculate_median(*list_b) < smallest_to_push->target_node->index)
+    {
+        while(smallest_to_push->index != 0 && smallest_to_push->target_node->index != 0)
+        {
+            rrr(list_a, list_b);
+            update_indexes(list_a, list_b);
+        }
+        while(smallest_to_push->index != 0)
+        {
+            rra(list_a, PRINT_IT);
+            update_indexes(list_a, list_b);
+        }
+        while(smallest_to_push->target_node->index != 0)
+        {
+            rrb(list_b, PRINT_IT);
+            update_indexes(list_a, list_b);
+        }
+    }
+    else
+    {
+        if (calculate_median(*list_a) < smallest_to_push->index && calculate_median(*list_b) >= smallest_to_push->target_node->index)
+        {
+            while (smallest_to_push->index != 0)
+            {
+                rra(list_a, PRINT_IT);
+                update_indexes(list_a, list_b);
+            }
+            while (smallest_to_push->target_node->index != 0)
+            {
+                rb(list_b, PRINT_IT);
+                update_indexes(list_a, list_b);
+            }
+        }
+        else if (calculate_median(*list_a) >= smallest_to_push->index && calculate_median(*list_b) < smallest_to_push->target_node->index)
+        {
+            while(smallest_to_push->index != 0)
+            {
+                ra(list_a, PRINT_IT);
+                update_indexes(list_a, list_b);
+            }
+            while(smallest_to_push->target_node->index != 0)
+            {
+                rrb(list_b, PRINT_IT);
+                update_indexes(list_a, list_b);
+            }
         }
     }
 }

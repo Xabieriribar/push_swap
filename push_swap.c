@@ -30,6 +30,5 @@ int main(int argc, char **argv)
             sort_turks(&list_a, &list_b);
     }
     ft_lstclear(&list_b);
-    print_list(list_a);
     return (0);
 }

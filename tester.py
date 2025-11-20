@@ -5,146 +5,198 @@ import os
 
 # --- CONFIGURATION ---
 PUSH_SWAP_EXEC = "./push_swap"
-NUM_TESTS = 100          # How many times to run each test case
-TEST_SIZES = [3, 5, 100, 500] # Stack sizes to test
 # ---------------------
 
 class Colors:
-    GREEN = '\033[92m'
-    RED = '\033[91m'
-    YELLOW = '\033[93m'
-    BLUE = '\033[94m'
-    RESET = '\033[0m'
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKCYAN = '\033[96m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
 
-def get_random_numbers(count):
-    """Generates a list of 'count' unique random integers."""
-    range_limit = count * 10
-    return random.sample(range(-range_limit, range_limit), count)
+class StackSimulator:
+    """
+    Simulates the stack operations strictly according to 42 Subject rules.
+    This acts as the 'Checker'.
+    """
+    def __init__(self, numbers):
+        self.a = list(numbers) # Top of stack is index 0
+        self.b = []
 
-def run_push_swap(numbers):
-    """Runs push_swap with the given numbers and returns the list of instructions."""
-    args = [PUSH_SWAP_EXEC] + [str(n) for n in numbers]
+    def sa(self):
+        if len(self.a) > 1:
+            self.a[0], self.a[1] = self.a[1], self.a[0]
+
+    def sb(self):
+        if len(self.b) > 1:
+            self.b[0], self.b[1] = self.b[1], self.b[0]
+
+    def ss(self):
+        self.sa()
+        self.sb()
+
+    def pa(self):
+        if len(self.b) > 0:
+            self.a.insert(0, self.b.pop(0))
+
+    def pb(self):
+        if len(self.a) > 0:
+            self.b.insert(0, self.a.pop(0))
+
+    def ra(self):
+        if len(self.a) > 1:
+            self.a.append(self.a.pop(0))
+
+    def rb(self):
+        if len(self.b) > 1:
+            self.b.append(self.b.pop(0))
+
+    def rr(self):
+        self.ra()
+        self.rb()
+
+    def rra(self):
+        if len(self.a) > 1:
+            self.a.insert(0, self.a.pop())
+
+    def rrb(self):
+        if len(self.b) > 1:
+            self.b.insert(0, self.b.pop())
+
+    def rrr(self):
+        self.rra()
+        self.rrb()
+
+    def execute(self, op):
+        op = op.strip()
+        if op == "sa": self.sa()
+        elif op == "sb": self.sb()
+        elif op == "ss": self.ss()
+        elif op == "pa": self.pa()
+        elif op == "pb": self.pb()
+        elif op == "ra": self.ra()
+        elif op == "rb": self.rb()
+        elif op == "rr": self.rr()
+        elif op == "rra": self.rra()
+        elif op == "rrb": self.rrb()
+        elif op == "rrr": self.rrr()
+        else:
+            return False # Invalid operation
+        return True
+
+    def is_sorted(self):
+        # Stack B must be empty
+        if len(self.b) != 0:
+            return False, "Stack B is not empty"
+        # Stack A must be sorted ascending
+        if self.a != sorted(self.a):
+            return False, "Stack A is not sorted"
+        return True, "OK"
+
+def run_test(stack_size):
+    # 1. Generate Random Numbers
+    numbers = random.sample(range(-10000, 10000), stack_size)
+    str_nums = [str(n) for n in numbers]
+
+    # 2. Run ./push_swap
     try:
-        result = subprocess.run(args, capture_output=True, text=True, check=True)
-        output = result.stdout.strip()
-        if not output:
-            return []
-        return output.split('\n')
-    except subprocess.CalledProcessError as e:
-        print(f"{Colors.RED}Error running push_swap: {e}{Colors.RESET}")
-        return None
+        process = subprocess.Popen(
+            [PUSH_SWAP_EXEC] + str_nums,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True
+        )
+        stdout, stderr = process.communicate()
     except FileNotFoundError:
-        print(f"{Colors.RED}Executable '{PUSH_SWAP_EXEC}' not found!{Colors.RESET}")
+        print(f"{Colors.FAIL}Error: {PUSH_SWAP_EXEC} not found. Run 'make' first.{Colors.ENDC}")
         sys.exit(1)
 
-def simulate_operations(stack_a, instructions):
-    """
-    Simulates the stack operations to verify correctness.
-    Returns (final_stack_a, final_stack_b, valid_flag)
-    """
-    stack_b = []
-    
-    ops = {
-        'sa': lambda a, b: (a.insert(0, a.pop(1)) if len(a) > 1 else None),
-        'sb': lambda a, b: (b.insert(0, b.pop(1)) if len(b) > 1 else None),
-        'ss': lambda a, b: (ops['sa'](a, b), ops['sb'](a, b)),
-        'pa': lambda a, b: a.insert(0, b.pop(0)) if b else None,
-        'pb': lambda a, b: b.insert(0, a.pop(0)) if a else None,
-        'ra': lambda a, b: a.append(a.pop(0)) if len(a) > 1 else None,
-        'rb': lambda a, b: b.append(b.pop(0)) if len(b) > 1 else None,
-        'rr': lambda a, b: (ops['ra'](a, b), ops['rb'](a, b)),
-        'rra': lambda a, b: a.insert(0, a.pop()) if len(a) > 1 else None,
-        'rrb': lambda a, b: b.insert(0, b.pop()) if len(b) > 1 else None,
-        'rrr': lambda a, b: (ops['rra'](a, b), ops['rrb'](a, b)),
-    }
+    if stderr:
+        print(f"{Colors.WARNING}Stderr Output: {stderr.strip()}{Colors.ENDC}")
 
-    for instr in instructions:
-        instr = instr.strip()
-        if not instr: continue
-        if instr not in ops:
-            print(f"{Colors.RED}Unknown instruction: {instr}{Colors.RESET}")
-            return stack_a, stack_b, False
-        ops[instr](stack_a, stack_b)
-        
-    return stack_a, stack_b, True
+    operations = stdout.strip().split('\n')
+    # Handle case where no operations are printed (already sorted)
+    if operations == ['']: operations = []
 
-def check_limits(size, count):
-    """Checks if the operation count meets the 42 subject requirements."""
-    limit = None
-    if size == 3 and count > 3: return False, 3
-    if size == 5 and count > 12: return False, 12
-    if size == 100: limit = 700
-    if size == 500: limit = 5500
+    # 3. Verify with Simulator
+    sim = StackSimulator(numbers)
+    for op in operations:
+        if not op: continue
+        valid = sim.execute(op)
+        if not valid:
+            return {
+                "status": "FAIL",
+                "msg": f"Invalid Instruction: '{op}'",
+                "ops": 0,
+                "nums": numbers
+            }
+
+    is_sorted, msg = sim.is_sorted()
     
-    if limit and count > limit:
-        return False, limit
-    return True, limit
+    if is_sorted:
+        return {"status": "OK", "ops": len(operations), "nums": numbers}
+    else:
+        return {"status": "FAIL", "msg": msg, "ops": len(operations), "nums": numbers, "final_a": sim.a[:10]}
 
 def main():
-    print(f"{Colors.BLUE}=== PUSH_SWAP PYTHON TESTER ==={Colors.RESET}\n")
-    
-    if not os.path.exists(PUSH_SWAP_EXEC):
-        print(f"{Colors.RED}FAIL: {PUSH_SWAP_EXEC} not found. Compile your project first.{Colors.RESET}")
-        return
+    if len(sys.argv) < 2:
+        print(f"Usage: python3 tester.py <stack_size> [num_tests]")
+        print(f"Example: python3 tester.py 100 10")
+        sys.exit(1)
 
-    total_errors = 0
+    stack_size = int(sys.argv[1])
+    num_tests = int(sys.argv[2]) if len(sys.argv) > 2 else 1
 
-    for size in TEST_SIZES:
-        print(f"{Colors.YELLOW}Testing Stack Size: {size}{Colors.RESET}")
-        moves_history = []
+    print(f"{Colors.HEADER}Running {num_tests} tests with stack size {stack_size}...{Colors.ENDC}")
+    print("-" * 60)
+
+    results = []
+    failures = 0
+
+    for i in range(num_tests):
+        res = run_test(stack_size)
         
-        for i in range(NUM_TESTS):
-            nums = get_random_numbers(size)
-            # Create a copy for simulation because lists are mutable
-            nums_copy = list(nums) 
-            
-            instructions = run_push_swap(nums)
-            
-            if instructions is None:
-                continue
-                
-            count = len(instructions)
-            moves_history.append(count)
-            
-            # Verify Sorting
-            res_a, res_b, valid_ops = simulate_operations(nums_copy, instructions)
-            
-            is_sorted = (res_a == sorted(nums)) and (len(res_b) == 0)
-            passed_limit, limit = check_limits(size, count)
+        if res["status"] == "OK":
+            results.append(res["ops"])
+            print(f"Test {i+1}: {Colors.OKGREEN}OK{Colors.ENDC} ({res['ops']} instructions)")
+        else:
+            failures += 1
+            print(f"Test {i+1}: {Colors.FAIL}FAIL{Colors.ENDC} -> {res['msg']}")
+            print(f"   Input: {res['nums'][:10]}...")
+            if 'final_a' in res:
+                print(f"   Top of Stack A: {res['final_a']}...")
 
-            # Output status
-            if is_sorted and passed_limit and valid_ops:
-                status = f"{Colors.GREEN}[OK]{Colors.RESET}"
-            else:
-                status = f"{Colors.RED}[FAIL]{Colors.RESET}"
-                total_errors += 1
-                if not is_sorted: print(f"  -> Not sorted or Stack B not empty.")
-                if not valid_ops: print(f"  -> Invalid instruction detected.")
-                if not passed_limit: print(f"  -> Over limit! ({count} > {limit})")
-
-            # Optional: Print individual test results (can be verbose)
-            # print(f"  Test {i+1}: {status} ({count} ops)")
-
-        # Summary for this size
-        avg = sum(moves_history) // len(moves_history) if moves_history else 0
-        max_ops = max(moves_history) if moves_history else 0
-        print(f"  Average Ops: {Colors.BLUE}{avg}{Colors.RESET} | Max Ops: {Colors.BLUE}{max_ops}{Colors.RESET}")
+    print("-" * 60)
+    if len(results) > 0:
+        avg = sum(results) / len(results)
+        print(f"Tests Passed: {len(results)}/{num_tests}")
+        print(f"Min: {min(results)}")
+        print(f"Max: {max(results)}")
+        print(f"Avg: {int(avg)}")
         
-        # Check against strict 42 benchmarks for 100/500
-        if size == 100:
-            if max_ops < 700: print(f"  Rating: {Colors.GREEN}5/5 (Excellent){Colors.RESET}")
-            elif max_ops < 900: print(f"  Rating: {Colors.YELLOW}4/5{Colors.RESET}")
-            else: print(f"  Rating: {Colors.RED}FAIL{Colors.RESET}")
-        elif size == 500:
-            if max_ops < 5500: print(f"  Rating: {Colors.GREEN}5/5 (Excellent){Colors.RESET}")
-            elif max_ops < 7000: print(f"  Rating: {Colors.YELLOW}4/5{Colors.RESET}")
-            else: print(f"  Rating: {Colors.RED}FAIL{Colors.RESET}")
-        print("-" * 40)
+        # Efficiency Grading (Approximation for 100 and 500)
+        if stack_size == 100:
+            if avg < 700: grade = f"{Colors.OKGREEN}5/5{Colors.ENDC}"
+            elif avg < 900: grade = f"{Colors.OKGREEN}4/5{Colors.ENDC}"
+            elif avg < 1100: grade = f"{Colors.WARNING}3/5{Colors.ENDC}"
+            elif avg < 1300: grade = f"{Colors.WARNING}2/5{Colors.ENDC}"
+            elif avg < 1500: grade = f"{Colors.FAIL}1/5{Colors.ENDC}"
+            else: grade = f"{Colors.FAIL}0/5{Colors.ENDC}"
+            print(f"Estimated Grade (Size 100): {grade}")
+        elif stack_size == 500:
+            if avg < 5500: grade = f"{Colors.OKGREEN}5/5{Colors.ENDC}"
+            elif avg < 7000: grade = f"{Colors.OKGREEN}4/5{Colors.ENDC}"
+            elif avg < 8500: grade = f"{Colors.WARNING}3/5{Colors.ENDC}"
+            elif avg < 10000: grade = f"{Colors.WARNING}2/5{Colors.ENDC}"
+            elif avg < 11500: grade = f"{Colors.FAIL}1/5{Colors.ENDC}"
+            else: grade = f"{Colors.FAIL}0/5{Colors.ENDC}"
+            print(f"Estimated Grade (Size 500): {grade}")
 
-    if total_errors == 0:
-        print(f"\n{Colors.GREEN}ALL TESTS PASSED! Great job.{Colors.RESET}")
     else:
-        print(f"\n{Colors.RED}SOME TESTS FAILED. Check output above.{Colors.RESET}")
+        print(f"{Colors.FAIL}All tests failed.{Colors.ENDC}")
 
 if __name__ == "__main__":
     main()

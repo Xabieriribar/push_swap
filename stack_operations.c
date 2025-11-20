@@ -15,50 +15,36 @@ bool    ft_is_sorted(t_list_a *list)
 and adding them always at the top*/
 void    pb(t_list_a **list_a, t_list_a **list_b, int mode)
 {
-    t_list_a *node;
-
-    node = *list_a;
-    *list_a = (*list_a)->next;
+    t_list_a *temp;
+    if (!*list_a)
+        return;
+    temp = *list_a;           // Take the top node of source
+    *list_a = (*list_a)->next;   // Move source head down
     if (*list_a)
         (*list_a)->prev = NULL;
-    if (!*list_b)
-    {
-        node->next = NULL;
-        node->prev = NULL;
-        *list_b = node;
-    }
-    else
-    {
-        node->next = (*list_b);
-        node->prev = NULL;
-        (*list_b)->prev = node;
-        *list_b = node;
-    }
+    
+    temp->next = *list_b;    // Link temp to the old head of dest
+    if (*list_b)
+        (*list_b)->prev = temp;
+    *list_b = temp;
     if (mode == PRINT_IT)
         ft_printf("pb\n");
 }
 
 void    pa(t_list_a **list_a, t_list_a **list_b, int mode)
 {
-    t_list_a *node;
-
-    node = *list_b;
-    *list_b = (*list_b)->next;
+    t_list_a *temp;
+    if (!*list_b)
+        return;
+    temp = *list_b;           // Take the top node of source
+    *list_b = (*list_b)->next;   // Move source head down
     if (*list_b)
         (*list_b)->prev = NULL;
-    if (!*list_a)
-    {
-        node->next = NULL;
-        node->prev = NULL;
-        *list_a = node;
-    }
-    else
-    {
-        node->next = (*list_a);
-        node->prev = NULL;
-        (*list_a)->prev = node;
-        *list_a = node;
-    }
+    
+    temp->next = *list_a;    // Link temp to the old head of dest
+    if (*list_a)
+        (*list_a)->prev = temp;
+    *list_a = temp;
     if (mode == PRINT_IT)
         ft_printf("pa\n");
 }
@@ -145,9 +131,11 @@ void rr(t_list_a **list_a, t_list_a **list_b)
 {
     ra(list_a, 0);
     rb(list_b, 0);
+    ft_printf("rr\n");
 }
 void rrr(t_list_a **list_a, t_list_a **list_b)
 {
     rra(list_a, 0);
     rrb(list_b, 0);
+    ft_printf("rrr\n");
 }
