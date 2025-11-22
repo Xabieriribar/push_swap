@@ -12,6 +12,15 @@
 
 #include "../push_swap.h"
 
+int		count_the_words(char **argv)
+{
+	int counter;
+
+	counter = 0;
+	while (argv[counter])
+		counter++;
+	return (counter);
+}
 bool	ft_is_number(t_data *data, int **numbers)
 {
 	int	index;
@@ -22,7 +31,7 @@ bool	ft_is_number(t_data *data, int **numbers)
 	if (data->mode)
 	{
 		index = 0;
-		data->argc += 1;
+		data->argc = (count_the_words(data->argv) + 1);
 	}
 	*numbers = malloc(sizeof(int) * (data->argc - 1));
 	if (!*numbers)
@@ -44,20 +53,16 @@ bool	ft_is_duplicate(int **numbers, t_data *data)
 	int		jndex;
 
 	index = 0;
-	while ((*numbers)[index])
+	while (index < data->argc - 1)
 	{
 		jndex = index + 1;
-		while ((*numbers)[jndex])
+		while (jndex < data->argc - 1)
 		{
 			if ((*numbers)[index] == (*numbers)[jndex])
 				return (false);
 			jndex++;
-			if (jndex == data->argc - 1)
-				break ;
 		}
 		index++;
-		if (jndex == data->argc - 1)
-			break ;
 	}
 	return (true);
 }

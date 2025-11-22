@@ -1,4 +1,4 @@
-#include "push_swap.h"
+#include "../push_swap.h"
 
 bool    last_is_biggest(t_list *list, t_list *last)
 {

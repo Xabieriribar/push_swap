@@ -1,5 +1,24 @@
 #include "../push_swap.h"
 
+int     set_costs(int index_a, int index_target, int len_a, int len_b)
+{
+    int cost_1;
+    int cost_2;
+    int cost_3;
+    int cost_4;
+
+    // Costo Sincronizado UP/UP
+    cost_1 = MAX(index_a, index_target);
+    // Costo Sincronizado DOWN/DOWN
+    cost_2 = MAX(len_a - index_a, len_b - index_target);
+    
+    // Costo Oposición A up / B down
+    cost_3 = index_a + (len_b - index_target);
+    // Costo Oposición A down / B up
+    cost_4 = (len_a - index_a) + index_target;
+
+    return (MIN(MIN(cost_1, cost_2), MIN(cost_3, cost_4)));
+}
 t_list *return_lowest_cost_node(t_list *list_a)
 {
     t_list *lowest_cost_node;
