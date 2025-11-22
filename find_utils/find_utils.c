@@ -1,8 +1,8 @@
-#include "push_swap.h"
+#include "../push_swap.h"
 
-t_list_a *find_biggest(t_list_a *list)
+t_list *find_biggest(t_list *list)
 {
-    t_list_a *biggest;
+    t_list *biggest;
     biggest = list;
     while (list != NULL)
     {
@@ -14,9 +14,9 @@ t_list_a *find_biggest(t_list_a *list)
 
 }
 
-t_list_a *find_smallest(t_list_a *list)
+t_list *find_smallest(t_list *list)
 {
-    t_list_a *smallest;
+    t_list *smallest;
     smallest = list;
     while (list != NULL)
     {
@@ -28,11 +28,11 @@ t_list_a *find_smallest(t_list_a *list)
 
 }
 
-t_list_a *find_next_biggest(t_list_a *list_a, int source_number)
+t_list *find_next_biggest(t_list *list_a, int source_number)
 {
-    t_list_a *biggest;
-    t_list_a *smallest;
-    t_list_a *candidate;
+    t_list *biggest;
+    t_list *smallest;
+    t_list *candidate;
     int mode;
 
     biggest = find_biggest(list_a);
@@ -53,11 +53,11 @@ t_list_a *find_next_biggest(t_list_a *list_a, int source_number)
     return (candidate);
 }
 
-t_list_a *find_next_smallest(t_list_a *list_b, int source_number)
+t_list *find_next_smallest(t_list *list_b, int source_number)
 {
-    t_list_a *biggest;
-    t_list_a *smallest;
-    t_list_a *candidate;
+    t_list *biggest;
+    t_list *smallest;
+    t_list *candidate;
     int      mode;
 
     biggest = find_biggest(list_b);
@@ -77,17 +77,17 @@ t_list_a *find_next_smallest(t_list_a *list_b, int source_number)
     }
     return (candidate);
 }
-t_list_a *find_cost(t_list_a *list_a, int len_a, int len_b)
-{
-    t_list_a *target_b;
-    t_list_a *head_list;
 
-    head_list = list_a;
-    while (list_a != NULL)
+int calculate_median(t_list *list_a)
+{
+    int median;
+    
+    median = 0;
+    if (ft_lstsize(list_a) % 2 == 0)
     {
-        target_b = list_a->target_node;
-        list_a->cost = set_costs(list_a->index, target_b->index, len_a, len_b);
-        list_a = list_a->next;
+        median = ft_lstsize(list_a) / 2;
     }
-    return (return_lowest_cost_node(head_list));
+    else
+        median = (ft_lstsize(list_a) / 2) + 1;
+    return (median);
 }

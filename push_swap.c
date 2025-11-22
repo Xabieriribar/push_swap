@@ -12,6 +12,43 @@
 
 #include "push_swap.h"
 
+void    update_indexes(t_list **list_a, t_list **list_b)
+{
+    t_list *temp;
+    int     index; 
+
+    if (list_a != NULL)
+    {
+        index = 0;
+        temp = *list_a;
+        while (temp != NULL)
+        {
+            temp->index = index;
+            index++;
+            temp = temp->next;
+        }
+    }
+    if (list_b == NULL)
+        return ;
+    temp = *list_b;
+    index = 0;
+    while (temp != NULL)
+    {
+        temp->index = index;
+        index++;
+        temp = temp->next;
+    }
+}
+bool    ft_is_sorted(t_list *list)
+{
+    while (list->next != NULL)
+    {
+        if (list->number > list->next->number)
+            return (false);
+        list = list->next;
+    }
+    return (true);
+}
 void	initialise_data(int argc, char **argv, t_data *data)
 {
 	data->argc = argc;
@@ -19,7 +56,7 @@ void	initialise_data(int argc, char **argv, t_data *data)
 	data->mode = 0;
 }
 
-void	free_data(t_data *data, int *nbr, t_list_a **list_a, t_list_a **list_b)
+void	free_data(t_data *data, int *nbr, t_list **list_a, t_list **list_b)
 {
 	free(data);
 	free(nbr);
@@ -30,8 +67,8 @@ void	free_data(t_data *data, int *nbr, t_list_a **list_a, t_list_a **list_b)
 int	main(int argc, char **argv)
 {
 	int			*numbers;
-	t_list_a	*list_a;
-	t_list_a	*list_b;
+	t_list	*list_a;
+	t_list	*list_b;
 	t_data		*data;
 
 	list_a = NULL;
@@ -42,7 +79,7 @@ int	main(int argc, char **argv)
 	initialise_data(argc, argv, data);
 	if (!ft_parse_input(data, &numbers))
 		return (write(2, "Error", 5), 0);
-	make_list(&list_a, numbers, data->argc);
+	ft_fill_list(&list_a, numbers, data->argc);
 	if (!ft_is_sorted(list_a))
 	{
 		if (ft_lstsize(list_a) == 2)
