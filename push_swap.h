@@ -89,6 +89,7 @@ void    sort_smallest(t_list_a **list_a);
 void    from_b_to_a(t_list_a **list_a, t_list_a **list_b);
 void    from_a_to_b(t_list_a **list_a, t_list_a **list_b);
 t_list_a *return_lowest_cost_node(t_list_a *list_a);
+int     set_costs(int index_a, int index_target, int len_a, int len_b);
 //OPERATIONS
 void    sa(t_list_a **list, int mode);
 void    rra(t_list_a **list, int mode);
@@ -102,5 +103,5 @@ void    rb(t_list_a **list, int mode);
 //FIND FUNCTIONS
 t_list_a *find_next_biggest(t_list_a *list_a, int source_number);
 t_list_a *find_next_smallest(t_list_a *list_b, int source_number);
-t_list_a *find_node_with_smallest_cost(t_list_a **list_a, t_list_a **list_b);
+t_list_a *find_cost(t_list_a *list_a, int len_a, int len_b);
 #endif

@@ -1,16 +1,24 @@
 #include "push_swap.h"
 
-void print_list(t_list_a *list)
+int     set_costs(int index_a, int index_target, int len_a, int len_b)
 {
-    printf("Printing list...\n");
-    while (list != NULL)
-    {
-        printf("Digit %d with index %d\n", list->number, list->index);
-        list = list->next;
-    }
-    printf("\n");
-}
+    int cost_1;
+    int cost_2;
+    int cost_3;
+    int cost_4;
 
+    // Costo Sincronizado UP/UP
+    cost_1 = MAX(index_a, index_target);
+    // Costo Sincronizado DOWN/DOWN
+    cost_2 = MAX(len_a - index_a, len_b - index_target);
+    
+    // Costo Oposición A up / B down
+    cost_3 = index_a + (len_b - index_target);
+    // Costo Oposición A down / B up
+    cost_4 = (len_a - index_a) + index_target;
+
+    return (MIN(MIN(cost_1, cost_2), MIN(cost_3, cost_4)));
+}
 void    update_indexes(t_list_a **list_a, t_list_a **list_b)
 {
     t_list_a *temp;
@@ -261,7 +269,7 @@ void    from_a_to_b(t_list_a **list_a, t_list_a **list_b)
         update_indexes(list_a, list_b);
         assign_target_nodes_to_a(list_a, list_b);
         update_indexes(list_a, list_b);
-        smallest_to_push = find_node_with_smallest_cost(list_a, list_b);
+        smallest_to_push = find_cost(*list_a, ft_lstsize(*list_a), ft_lstsize(*list_b));
         update_indexes(list_a, list_b);
         push_to_top(smallest_to_push, list_a, list_b);
         pb(list_a, list_b, PRINT_IT);
