@@ -12,43 +12,55 @@
 
 #include "push_swap.h"
 
-void    update_indexes(t_list **list_a, t_list **list_b)
+/*
+** Refreshes the `index` attribute for every node in both lists. This must be
+** called after every push or rotation operation to keep positions accurate.
+*/
+void	update_indexes(t_list **list_a, t_list **list_b)
 {
-    t_list *temp;
-    int     index; 
+	t_list	*temp;
+	int		index;
 
-    if (list_a != NULL)
-    {
-        index = 0;
-        temp = *list_a;
-        while (temp != NULL)
-        {
-            temp->index = index;
-            index++;
-            temp = temp->next;
-        }
-    }
-    if (list_b == NULL)
-        return ;
-    temp = *list_b;
-    index = 0;
-    while (temp != NULL)
-    {
-        temp->index = index;
-        index++;
-        temp = temp->next;
-    }
+	if (list_a != NULL)
+	{
+		index = 0;
+		temp = *list_a;
+		while (temp != NULL)
+		{
+			temp->index = index;
+			index++;
+			temp = temp->next;
+		}
+	}
+	if (list_b == NULL)
+		return ;
+	temp = *list_b;
+	index = 0;
+	while (temp != NULL)
+	{
+		temp->index = index;
+		index++;
+		temp = temp->next;
+	}
 }
-bool    ft_is_sorted(t_list *list)
+
+/*
+** Checks if the list is already sorted in ascending order.
+*/
+bool	ft_is_sorted(t_list *list)
 {
-    while (list->next != NULL)
-    {
-        if (list->number > list->next->number)
-            return (false);
-        list = list->next;
-    }
-    return (true);
+	while (list->next != NULL)
+	{
+		if (list->number > list->next->number)
+			return (false);
+		list = list->next;
+	}
+	return (true);
 }
+
+/*
+** Initializes the main data structure with arguments.
+*/
 void	initialise_data(int argc, char **argv, t_data *data)
 {
 	data->argc = argc;
@@ -56,6 +68,10 @@ void	initialise_data(int argc, char **argv, t_data *data)
 	data->mode = 0;
 }
 
+/*
+** Clean-up function to free the main structure, the integer array, and
+** both linked lists before the program exits.
+*/
 void	free_data(t_data *data, int *nbr, t_list **list_a, t_list **list_b)
 {
 	free(data);
@@ -64,17 +80,21 @@ void	free_data(t_data *data, int *nbr, t_list **list_a, t_list **list_b)
 	ft_lstclear(list_b);
 }
 
+/*
+** Entry point. Handles argument parsing, list creation, and selects the
+** appropriate sorting strategy (2, 3, or Turk Algorithm) based on input size.
+*/
 int	main(int argc, char **argv)
 {
 	int			*numbers;
-	t_list	*list_a;
-	t_list	*list_b;
+	t_list		*list_a;
+	t_list		*list_b;
 	t_data		*data;
 
 	list_a = NULL;
 	list_b = NULL;
 	data = malloc(sizeof(struct s_data));
-	if (!data)
+	if (!data || argc == 1)
 		return (0);
 	initialise_data(argc, argv, data);
 	if (!ft_parse_input(data, &numbers))

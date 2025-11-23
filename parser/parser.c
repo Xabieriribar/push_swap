@@ -12,15 +12,24 @@
 
 #include "../push_swap.h"
 
-int		count_the_words(char **argv)
+/*
+** Helper function to count arguments when they are passed as a single string
+** (e.g., "./push_swap '1 2 3'").
+*/
+int	count_the_words(char **argv)
 {
-	int counter;
+	int	counter;
 
 	counter = 0;
 	while (argv[counter])
 		counter++;
 	return (counter);
 }
+
+/*
+** Validates that all input strings are valid integers. Allocates memory for
+** the integer array and converts strings using ft_atoi.
+*/
 bool	ft_is_number(t_data *data, int **numbers)
 {
 	int	index;
@@ -47,6 +56,10 @@ bool	ft_is_number(t_data *data, int **numbers)
 	return (true);
 }
 
+/*
+** Checks the integer array for duplicate numbers. 
+** Push_swap requires unique values.
+*/
 bool	ft_is_duplicate(int **numbers, t_data *data)
 {
 	int		index;
@@ -67,6 +80,10 @@ bool	ft_is_duplicate(int **numbers, t_data *data)
 	return (true);
 }
 
+/*
+** Main parsing controller. Handles splitting arguments if necessary, converts
+** strings to numbers, and runs validation checks (duplicates, non-numbers).
+*/
 bool	ft_parse_input(t_data *data, int **numbers)
 {
 	if (data->argc == 2 && ft_strchr(data->argv[1], ' '))

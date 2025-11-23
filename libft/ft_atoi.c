@@ -12,16 +12,13 @@
 
 #include "libft.h"
 
-int	ft_atoi(const char *nptr)
+int	ft_find_min(const char *nptr)
 {
-	long integer;
-	long counter;
-	long sign;	
+	int	counter;
+	int	sign;
 
-	sign = 1;
 	counter = 0;
-	while ((*nptr >= 9 && *nptr <= 13) || *nptr == ' ')
-		nptr++;
+	sign = 1;
 	while (*nptr == '-' || *nptr == '+')
 	{
 		if (*nptr == '-')
@@ -31,11 +28,25 @@ int	ft_atoi(const char *nptr)
 	}
 	if (counter >= 2)
 		return (0);
+	return (sign);
+}
+
+int	ft_atoi(const char *nptr)
+{
+	long	integer;
+	long	counter;
+	long	sign;
+
+	counter = 0;
+	while ((*nptr >= 9 && *nptr <= 13) || *nptr == ' ')
+		nptr++;
+	sign = ft_find_min(nptr);
+	if (sign == 0)
+		return (0);
 	integer = 0;
 	while (ft_isdigit(*nptr))
 	{
-		integer *= 10;
-		integer += (*nptr - '0');
+		integer = (integer * 10) + (*nptr - '0');
 		nptr++;
 	}
 	if (integer < INT_MIN || integer > INT_MAX)

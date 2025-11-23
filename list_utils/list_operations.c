@@ -6,12 +6,16 @@
 /*   By: xiribar <marvin@42.fr>                        +#+                    */
 /*                                                    +#+                     */
 /*   Created: 2025/11/22 08:48:49 by xiribar        #+#    #+#                */
-/*   Updated: 2025/11/22 08:48:50 by xiribar        ########   odam.nl        */
+/*   Updated: 2025/11/23 08:24:26 by xiribar        ########   odam.nl        */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../push_swap.h"
 
+/*
+** Frees all the memory allocated for the linked list nodes to prevent leaks
+** when the program exits or encounters an error.
+*/
 void	ft_lstclear(t_list **lst)
 {
 	t_list	*temp;
@@ -27,9 +31,14 @@ void	ft_lstclear(t_list **lst)
 	free(*lst);
 	*lst = NULL;
 }
-t_list *ft_lstnew(int number, int index, t_list *target_node)
+
+/*
+** Allocates memory for a new node, initializes its value and index, and sets
+** its pointers (next, prev, target) to NULL.
+*/
+t_list	*ft_lstnew(int number, int index, t_list *target_node)
 {
-	t_list *new;
+	t_list	*new;
 
 	new = malloc(sizeof(struct s_list));
 	if (!new)
@@ -43,18 +52,25 @@ t_list *ft_lstnew(int number, int index, t_list *target_node)
 	return (new);
 }
 
-t_list *ft_lstlast(t_list *list)
+/*
+** Traverses the list to find and return the last node.
+*/
+t_list	*ft_lstlast(t_list *list)
 {
 	while (list->next != NULL)
 		list = list->next;
 	return (list);
 }
 
-void    ft_fill_list(t_list **list, int *numbers, int argc)
+/*
+** Converts the array of parsed integers into a doubly linked list structure,
+** linking the `next` and `prev` pointers for each node.
+*/
+void	ft_fill_list(t_list **list, int *numbers, int argc)
 {
-	int index;
-	t_list *node;
-	t_list *last;
+	int		index;
+	t_list	*node;
+	t_list	*last;
 
 	index = 0;
 	node = NULL;
@@ -66,16 +82,19 @@ void    ft_fill_list(t_list **list, int *numbers, int argc)
 		else
 		{
 			last = ft_lstlast(*list);
-			last->next = node; 
+			last->next = node;
 			node->prev = last;
 		}
 		index++;
 	}
 }
 
-int ft_lstsize(t_list *list)
+/*
+** Counts and returns the total number of nodes currently in the list.
+*/
+int	ft_lstsize(t_list *list)
 {
-	int len;
+	int	len;
 
 	len = 0;
 	while (list)
