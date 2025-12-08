@@ -1,6 +1,6 @@
 <div align="left">
 
-<img src="https://github.com/ayogun/42-project-badges/blob/main/badges/push_swapm.png?raw=true" width="150px" alt="Push Swap Badge" style="margin-bottom: 20px;">
+<img src="[https://github.com/ayogun/42-project-badges/blob/main/badges/push_swapm.png?raw=true](https://github.com/ayogun/42-project-badges/blob/main/badges/push_swapm.png?raw=true)" width="150px" alt="Push Swap Badge" style="margin-bottom: 20px;">
 
 <h3>
     <span style="font-family: sans-serif; color: #333;">
@@ -55,16 +55,16 @@
 
 <p>
     <a href="#">
-        <img src="https://img.shields.io/badge/C-000000?style=for-the-badge&logo=c&logoColor=white" alt="C">
+        <img src="[https://img.shields.io/badge/C-000000?style=for-the-badge&logo=c&logoColor=white](https://img.shields.io/badge/C-000000?style=for-the-badge&logo=c&logoColor=white)" alt="C">
     </a>
     <a href="#">
-        <img src="https://img.shields.io/badge/Make-000000?style=for-the-badge&logo=gnu-make&logoColor=white" alt="Makefile">
+        <img src="[https://img.shields.io/badge/Make-000000?style=for-the-badge&logo=gnu-make&logoColor=white](https://img.shields.io/badge/Make-000000?style=for-the-badge&logo=gnu-make&logoColor=white)" alt="Makefile">
     </a>
     <a href="#">
-        <img src="https://img.shields.io/badge/Shell_Script-000000?style=for-the-badge&logo=gnu-bash&logoColor=white" alt="Bash">
+        <img src="[https://img.shields.io/badge/Shell_Script-000000?style=for-the-badge&logo=gnu-bash&logoColor=white](https://img.shields.io/badge/Shell_Script-000000?style=for-the-badge&logo=gnu-bash&logoColor=white)" alt="Bash">
     </a>
     <a href="#">
-        <img src="https://img.shields.io/badge/Git-000000?style=for-the-badge&logo=git&logoColor=white" alt="Git">
+        <img src="[https://img.shields.io/badge/Git-000000?style=for-the-badge&logo=git&logoColor=white](https://img.shields.io/badge/Git-000000?style=for-the-badge&logo=git&logoColor=white)" alt="Git">
     </a>
 </p>
 
@@ -109,23 +109,22 @@
 <br>
 <br>
 
-<h3>05. USAGE</h3>
+</div>
 
-<p style="font-family: sans-serif;">
-Clone the repository and compile the executable using the Makefile:
-</p>
+### 05. USAGE
 
+**1. Clone and Compile**
 ```bash
 git clone git@github.com:Xabieriribar/push_swap.git
 cd push_swap
 make
 
-<p style="font-family: sans-serif;"> Run the program with a list of integers: </p>
+2. Run with Integers
 Bash
 
 ./push_swap 4 67 3 87 23
 
-<p style="font-family: sans-serif;"> <strong>Bonus:</strong> Check the number of operations: </p>
+3. Check Operations Count
 Bash
 
 ARG="4 67 3 87 23"; ./push_swap $ARG | wc -l
@@ -136,6 +135,6 @@ ARG="4 67 3 87 23"; ./push_swap $ARG | wc -l
 
 <p> <a href="https://ch.linkedin.com/in/xabier-iribar-revuelta-b85b09320" target="_blank"> <img src="https://img.shields.io/badge/LinkedIn-000000?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn"> </a> <a href="https://xabieriribar.com" target="_blank"> <img src="https://img.shields.io/badge/Portfolio-000000?style=for-the-badge&logo=firefox&logoColor=white" alt="Portfolio"> </a> <a href="mailto:xabieriribarrevuelta@gmail.com"> <img src="https://img.shields.io/badge/Email-000000?style=for-the-badge&logo=gmail&logoColor=white" alt="Email"> </a> </p>
 
-<p style="font-size: 12px; color: #666; margin-top: 20px;"> © 2024 Xabier Iribar Revuelta. All Rights Reserved. </p>
+<p style="font-family: sans-serif; font-size: 12px; color: #555;"> © 2024 Xabier Iribar Revuelta. All Rights Reserved. </p>
 
 </div>
