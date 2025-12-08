@@ -1,6 +1,6 @@
 <div align="left">
 
-<img src="[https://github.com/ayogun/42-project-badges/blob/main/badges/push_swapm.png?raw=true](https://github.com/ayogun/42-project-badges/blob/main/badges/push_swapm.png?raw=true)" width="150px" alt="Push Swap Badge" style="margin-bottom: 20px;">
+<img src="https://github.com/ayogun/42-project-badges/blob/main/badges/push_swapm.png?raw=true" width="150px" alt="Push Swap Badge" style="margin-bottom: 20px;">
 
 <h3>
     <span style="font-family: sans-serif; color: #333;">
@@ -55,16 +55,16 @@
 
 <p>
     <a href="#">
-        <img src="[https://img.shields.io/badge/C-000000?style=for-the-badge&logo=c&logoColor=white](https://img.shields.io/badge/C-000000?style=for-the-badge&logo=c&logoColor=white)" alt="C">
+        <img src="https://img.shields.io/badge/C-000000?style=for-the-badge&logo=c&logoColor=white" alt="C">
     </a>
     <a href="#">
-        <img src="[https://img.shields.io/badge/Make-000000?style=for-the-badge&logo=gnu-make&logoColor=white](https://img.shields.io/badge/Make-000000?style=for-the-badge&logo=gnu-make&logoColor=white)" alt="Makefile">
+        <img src="https://img.shields.io/badge/Make-000000?style=for-the-badge&logo=gnu-make&logoColor=white" alt="Makefile">
     </a>
     <a href="#">
-        <img src="[https://img.shields.io/badge/Shell_Script-000000?style=for-the-badge&logo=gnu-bash&logoColor=white](https://img.shields.io/badge/Shell_Script-000000?style=for-the-badge&logo=gnu-bash&logoColor=white)" alt="Bash">
+        <img src="https://img.shields.io/badge/Shell_Script-000000?style=for-the-badge&logo=gnu-bash&logoColor=white" alt="Bash">
     </a>
     <a href="#">
-        <img src="[https://img.shields.io/badge/Git-000000?style=for-the-badge&logo=git&logoColor=white](https://img.shields.io/badge/Git-000000?style=for-the-badge&logo=git&logoColor=white)" alt="Git">
+        <img src="https://img.shields.io/badge/Git-000000?style=for-the-badge&logo=git&logoColor=white" alt="Git">
     </a>
 </p>
 
@@ -128,6 +128,8 @@ Bash
 Bash
 
 ARG="4 67 3 87 23"; ./push_swap $ARG | wc -l
+
+<div align="left">
 
 <h3>06. FILE STRUCTURE</h3> <blockquote> <em>The project follows a strict 42-Norminette compliant structure, separating operations, sorting logic, and parsing utilities.</em> </blockquote>
 
