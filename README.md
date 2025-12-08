@@ -1,3 +1,10 @@
+The issue is that the end section (06 and 07) lost all its formatting (the horizontal lines <hr> and line breaks <br>) in the version you have, making it look squashed and "ugly" compared to the top. Also, the code blocks in Section 05 were malformed (missing closing backticks).
+
+Here is the corrected, complete version. I have restored the separator lines and spacing for the end sections so they match the beautiful style of the beginning.
+
+Copy everything inside this code block:
+Markdown
+
 <div align="left">
 
 <img src="https://github.com/ayogun/42-project-badges/blob/main/badges/push_swapm.png?raw=true" width="150px" alt="Push Swap Badge" style="margin-bottom: 20px;">
@@ -111,20 +118,23 @@
 
 </div>
 
-### 05. USAGE
+<h3>05. USAGE</h3>
 
-**1. Clone and Compile**
+<p style="font-family: sans-serif;">
+<strong>1. Clone and Compile</strong>
+</p>
+
 ```bash
 git clone git@github.com:Xabieriribar/push_swap.git
 cd push_swap
 make
 
-2. Run with Integers
+<p style="font-family: sans-serif;"> <strong>2. Run with Integers</strong> </p>
 Bash
 
 ./push_swap 4 67 3 87 23
 
-3. Check Operations Count
+<p style="font-family: sans-serif;"> <strong>3. Check Operations Count</strong> </p>
 Bash
 
 ARG="4 67 3 87 23"; ./push_swap $ARG | wc -l
@@ -137,6 +147,6 @@ ARG="4 67 3 87 23"; ./push_swap $ARG | wc -l
 
 <p> <a href="https://ch.linkedin.com/in/xabier-iribar-revuelta-b85b09320" target="_blank"> <img src="https://img.shields.io/badge/LinkedIn-000000?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn"> </a> <a href="https://xabieriribar.com" target="_blank"> <img src="https://img.shields.io/badge/Portfolio-000000?style=for-the-badge&logo=firefox&logoColor=white" alt="Portfolio"> </a> <a href="mailto:xabieriribarrevuelta@gmail.com"> <img src="https://img.shields.io/badge/Email-000000?style=for-the-badge&logo=gmail&logoColor=white" alt="Email"> </a> </p>
 
-<p style="font-family: sans-serif; font-size: 12px; color: #555;"> © 2024 Xabier Iribar Revuelta. All Rights Reserved. </p>
+<p style="font-size: 12px; color: #666; margin-top: 20px;"> © 2024 Xabier Iribar Revuelta. All Rights Reserved. </p>
 
 </div>
