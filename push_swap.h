@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                         ::::::::           */
-/*   push_swap.h                                         :+:    :+:           */
-/*                                                      +:+                   */
-/*   By: xiribar <marvin@42.fr>                        +#+                    */
-/*                                                    +#+                     */
-/*   Created: 2025/11/23 08:59:53 by xiribar        #+#    #+#                */
-/*   Updated: 2025/11/23 08:59:54 by xiribar        ########   odam.nl        */
+/*                                                        :::      ::::::::   */
+/*   push_swap.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/23 08:59:53 by xiribar           #+#    #+#             */
+/*   Updated: 2025/12/09 20:37:03 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ bool	ft_parse_input(t_data *data, int **numbers);
 /* -------------------------------------------------------------------------- */
 
 int		ft_printf(const char *format, ...);
-int		ft_atoi(const char *nptr);
+long    ft_atoi(const char *nptr);
 char	**ft_split(char const *s, char c);
 char	*ft_strchr(const char *s, int c);
 

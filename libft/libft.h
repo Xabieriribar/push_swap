@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiribar <xiribar@42lausanne.ch>            +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 14:43:21 by xiribar           #+#    #+#             */
-/*   Updated: 2025/09/30 11:30:14 by xiribar          ###   ####lausanne.ch   */
+/*   Updated: 2025/12/09 20:42:45 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <limits.h>
+# include <stdarg.h>
 
 typedef struct s_list
 {
@@ -25,7 +26,7 @@ typedef struct s_list
 	struct s_list	*next;
 }	t_list;
 
-int		ft_atoi(const char *nptr);
+long	ft_atoi(const char *nptr);
 void	ft_bzero(void *s, size_t n);
 int		ft_printf(const char *format, ...);
 int		ft_putchar(char c);

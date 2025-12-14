@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                         ::::::::           */
-/*   parser.c                                            :+:    :+:           */
-/*                                                      +:+                   */
-/*   By: xiribar <marvin@42.fr>                        +#+                    */
-/*                                                    +#+                     */
-/*   Created: 2025/11/22 08:46:42 by xiribar        #+#    #+#                */
-/*   Updated: 2025/11/22 08:46:43 by xiribar        ########   odam.nl        */
+/*                                                        :::      ::::::::   */
+/*   parser.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/22 08:46:42 by xiribar           #+#    #+#             */
+/*   Updated: 2025/12/09 20:42:01 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,9 @@ int	count_the_words(char **argv)
 */
 bool	ft_is_number(t_data *data, int **numbers)
 {
-	int	index;
-	int	j;
+	int		index;
+	long	temp_value;
+	int		j;
 
 	index = 1;
 	j = 0;
@@ -47,9 +48,10 @@ bool	ft_is_number(t_data *data, int **numbers)
 		return (false);
 	while (data->argv[index])
 	{
-		(*numbers)[j] = ft_atoi(data->argv[index]);
-		if (!(*numbers)[j])
+		temp_value = ft_atoi(data->argv[index]);
+		if (temp_value <= INT_MIN || temp_value >= INT_MAX)
 			return (false);
+		(*numbers)[j] = temp_value;
 		j++;
 		index++;
 	}
@@ -93,6 +95,6 @@ bool	ft_parse_input(t_data *data, int **numbers)
 	}
 	if (data->argc == 1 || !ft_is_number(data, numbers)
 		|| !ft_is_duplicate(numbers, data))
-		return (false);
+		return (free(data), false);
 	return (true);
 }
