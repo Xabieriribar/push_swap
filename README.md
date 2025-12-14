@@ -1,154 +1,72 @@
-The issue is that the end section (06 and 07) lost all its formatting (the horizontal lines <hr> and line breaks <br>) in the version you have, making it look squashed and "ugly" compared to the top. Also, the code blocks in Section 05 were malformed (missing closing backticks).
-
-Here is the corrected, complete version. I have restored the separator lines and spacing for the end sections so they match the beautiful style of the beginning.
-
-Copy everything inside this code block:
-Markdown
-
 *This project has been created as part of the 42 curriculum by xiribar.*
 
-<div align="left">
+![Push Swap Badge](https://github.com/ayogun/42-project-badges/blob/main/badges/push_swapm.png?raw=true)
 
-<img src="https://github.com/ayogun/42-project-badges/blob/main/badges/push_swapm.png?raw=true" width="150px" alt="Push Swap Badge" style="margin-bottom: 20px;">
+# PUSH_SWAP: ALGORITHMIC SORTING ENGINE
+*42 Lausanne, Switzerland*
 
-<h3>
-    <span style="font-family: sans-serif; color: #333;">
-        PUSH_SWAP: ALGORITHMIC SORTING ENGINE
-    </span>
-</h3>
-<p>
-    <em>42 Lausanne, Switzerland</em>
-</p>
+## 01. ABOUT
+This project is a deep dive into algorithmic complexity and stack manipulation. The goal is simple: sort a random set of integers using two stacks (**Stack A** and **Stack B**) and a specific set of operations. The challenge lies in the constraint: minimizing the number of instructions.
 
-<br>
+I implemented the **Turk Algorithm** (Mechanical Turk). Instead of recursive methods like QuickSort, this is a greedy algorithm that calculates the "cheapest" move for every node at every step, ensuring highly optimized operation counts for large datasets.
 
-<h3>01. ABOUT</h3>
-<p style="max-width: 600px; line-height: 1.6; font-family: sans-serif;">
-    This project is a deep dive into algorithmic complexity and stack manipulation. The goal is simple: sort a random set of integers using two stacks (<strong>Stack A</strong> and <strong>Stack B</strong>) and a specific set of operations. The challenge lies in the constraint: minimizing the number of instructions.
-    <br><br>
-    I implemented the <strong>Turk Algorithm</strong> (Mechanical Turk). Instead of recursive methods like QuickSort, this is a greedy algorithm that calculates the "cheapest" move for every node at every step, ensuring highly optimized operation counts for large datasets.
-</p>
+## 02. THE LOGIC
 
-<br>
-<hr style="height: 2px; border: none; background-color: #000;">
-<br>
+### PHASE 1: PARTITIONING
+*   **Push to B:** Move all nodes from A to B, leaving only 3 elements.
+*   **Pre-sorting:** While pushing, I check median values. If a node is smaller than the median, I rotate B to place it at the bottom.
+*   **Tiny Sort:** Instantly sort the remaining 3 numbers in Stack A.
 
-<h3>02. THE LOGIC</h3>
-<table>
-    <tr>
-        <td width="50%" valign="top">
-            <strong>PHASE 1: PARTITIONING</strong>
-            <br><br>
-            <ul>
-                <li><strong>Push to B:</strong> Move all nodes from A to B, leaving only 3 elements.</li>
-                <li><strong>Pre-sorting:</strong> While pushing, I check median values. If a node is smaller than the median, I rotate B to place it at the bottom.</li>
-                <li><strong>Tiny Sort:</strong> Instantly sort the remaining 3 numbers in Stack A.</li>
-            </ul>
-        </td>
-        <td width="50%" valign="top">
-             <strong>PHASE 2: MECHANICAL TURK</strong>
-             <br><br>
-            <ul>
-                <li><strong>Cost Calculation:</strong> For every node in B, I calculate the moves required to put it in position in A.</li>
-                <li><strong>Cheapest Move:</strong> I select the node with the absolute lowest cost.</li>
-                <li><strong>Simultaneous Rotation:</strong> I utilize <code>rr</code> and <code>rrr</code> to move both stacks at once, saving instructions.</li>
-            </ul>
-        </td>
-    </tr>
-</table>
+### PHASE 2: MECHANICAL TURK
+*   **Cost Calculation:** For every node in B, I calculate the moves required to put it in position in A.
+*   **Cheapest Move:** I select the node with the absolute lowest cost.
+*   **Simultaneous Rotation:** I utilize `rr` and `rrr` to move both stacks at once, saving instructions.
 
-<br>
-<br>
+## 03. TECHNOLOGY STACK
 
-<h3>03. TECHNOLOGY STACK</h3>
+!C
+!Makefile
+!Bash
+!Git
 
-<p>
-    <a href="#">
-        <img src="https://img.shields.io/badge/C-000000?style=for-the-badge&logo=c&logoColor=white" alt="C">
-    </a>
-    <a href="#">
-        <img src="https://img.shields.io/badge/Make-000000?style=for-the-badge&logo=gnu-make&logoColor=white" alt="Makefile">
-    </a>
-    <a href="#">
-        <img src="https://img.shields.io/badge/Shell_Script-000000?style=for-the-badge&logo=gnu-bash&logoColor=white" alt="Bash">
-    </a>
-    <a href="#">
-        <img src="https://img.shields.io/badge/Git-000000?style=for-the-badge&logo=git&logoColor=white" alt="Git">
-    </a>
-</p>
+## 04. PERFORMANCE METRICS
 
-<br>
-<hr style="height: 1px; border: none; background-color: #ddd;">
-<br>
+| Stack Size | Constraint (Max Ops) | My Algorithm (Avg Ops) |
+| :--- | :--- | :--- |
+| **3 Numbers** | < 3 | **1-2** (Hardcoded) |
+| **5 Numbers** | < 12 | **9** (Average) |
+| **100 Numbers** | < 700 | **~580** |
+| **500 Numbers** | < 5500 | **~4800** |
 
-<h3>04. PERFORMANCE METRICS</h3>
+## 05. USAGE
 
-<table>
-    <thead align="left">
-        <tr>
-            <th width="20%">Stack Size</th>
-            <th width="40%">Constraint (Max Ops)</th>
-            <th width="40%">My Algorithm (Avg Ops)</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td><strong>3 Numbers</strong></td>
-            <td>< 3</td>
-            <td><strong>1-2</strong> (Hardcoded)</td>
-        </tr>
-        <tr>
-            <td><strong>5 Numbers</strong></td>
-            <td>< 12</td>
-            <td><strong>9</strong> (Average)</td>
-        </tr>
-        <tr>
-            <td><strong>100 Numbers</strong></td>
-            <td>< 700</td>
-            <td><strong>~580</strong></td>
-        </tr>
-        <tr>
-            <td><strong>500 Numbers</strong></td>
-            <td>< 5500</td>
-            <td><strong>~4800</strong></td>
-        </tr>
-    </tbody>
-</table>
-
-<br>
-<br>
-
-</div>
-
-<h3>05. USAGE</h3>
-
-<p style="font-family: sans-serif;">
-<strong>1. Clone and Compile</strong>
-</p>
+### 1. Clone and Compile
 
 ```bash
 git clone git@github.com:Xabieriribar/push_swap.git
 cd push_swap
 make
+```
 
-<p style="font-family: sans-serif;"> <strong>2. Run with Integers</strong> </p>
-Bash
+### 2. Run with Integers
 
+```bash
 ./push_swap 4 67 3 87 23
+```
 
-<p style="font-family: sans-serif;"> <strong>3. Check Operations Count</strong> </p>
-Bash
+### 3. Check Operations Count
 
+```bash
 ARG="4 67 3 87 23"; ./push_swap $ARG | wc -l
+```
 
-<div align="left">
+## 06. FILE STRUCTURE
+> *The project follows a strict 42-Norminette compliant structure, separating operations, sorting logic, and parsing utilities.*
 
-<h3>06. FILE STRUCTURE</h3> <blockquote> <em>The project follows a strict 42-Norminette compliant structure, separating operations, sorting logic, and parsing utilities.</em> </blockquote>
+## 07. CONTACT
 
-<h3>07. CONTACT</h3>
+[!LinkedIn](https://ch.linkedin.com/in/xabier-iribar-revuelta-b85b09320)
+[!Portfolio](https://xabieriribar.com)
+[!Email](mailto:xabieriribarrevuelta@gmail.com)
 
-<p> <a href="https://ch.linkedin.com/in/xabier-iribar-revuelta-b85b09320" target="_blank"> <img src="https://img.shields.io/badge/LinkedIn-000000?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn"> </a> <a href="https://xabieriribar.com" target="_blank"> <img src="https://img.shields.io/badge/Portfolio-000000?style=for-the-badge&logo=firefox&logoColor=white" alt="Portfolio"> </a> <a href="mailto:xabieriribarrevuelta@gmail.com"> <img src="https://img.shields.io/badge/Email-000000?style=for-the-badge&logo=gmail&logoColor=white" alt="Email"> </a> </p>
-
-<p style="font-size: 12px; color: #666; margin-top: 20px;"> © 2024 Xabier Iribar Revuelta. All Rights Reserved. </p>
-
-</div>
+© 2024 Xabier Iribar Revuelta. All Rights Reserved.
