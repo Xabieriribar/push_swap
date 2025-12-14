@@ -63,16 +63,14 @@ bool	ft_is_sorted(t_list *list)
 /*
 ** Initializes the main data structure with arguments.
 */
-void	initialise_data(int argc, char **argv, t_data *data)
+int	initialise_data(int argc, char **argv, t_data *data)
 {
-	if (argc == 1)
-	{
-		free(data);
-		exit(EXIT_FAILURE);
-	}
+	if (argc < 2)
+		return (0);
 	data->argc = argc;
 	data->argv = argv;
 	data->mode = 0;
+	return (1);
 }
 
 /*
@@ -104,11 +102,10 @@ int	main(int argc, char **argv)
 	list_b = NULL;
 	numbers = NULL;
 	data = malloc(sizeof(struct s_data));
-	if (!data)
-		return (1);
-	initialise_data(argc, argv, data);
+	if (!data || !initialise_data(argc, argv, data))
+		return (0);
 	if (!ft_parse_input(data, &numbers))
-		return (write(2, "Error\n", 6), 0);
+		return (write(2, "Error\n", 6), 1);
 	ft_fill_list(&list_a, numbers, data->argc);
 	if (!ft_is_sorted(list_a))
 	{
