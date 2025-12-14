@@ -49,6 +49,8 @@ void	update_indexes(t_list **list_a, t_list **list_b)
 */
 bool	ft_is_sorted(t_list *list)
 {
+	if (!list)
+		return (true);
 	while (list->next != NULL)
 	{
 		if (list->number > list->next->number)
@@ -63,6 +65,11 @@ bool	ft_is_sorted(t_list *list)
 */
 void	initialise_data(int argc, char **argv, t_data *data)
 {
+	if (argc == 1)
+	{
+		free(data);
+		exit(EXIT_FAILURE);
+	}
 	data->argc = argc;
 	data->argv = argv;
 	data->mode = 0;
@@ -74,6 +81,8 @@ void	initialise_data(int argc, char **argv, t_data *data)
 */
 void	free_data(t_data *data, int *nbr, t_list **list_a, t_list **list_b)
 {
+	if (data && data->mode == 1)
+		free_split_argv(data->argv);
 	free(data);
 	free(nbr);
 	ft_lstclear(list_a);
@@ -93,12 +102,13 @@ int	main(int argc, char **argv)
 
 	list_a = NULL;
 	list_b = NULL;
+	numbers = NULL;
 	data = malloc(sizeof(struct s_data));
-	if (!data || argc == 1)
-		return (0);
+	if (!data)
+		return (1);
 	initialise_data(argc, argv, data);
 	if (!ft_parse_input(data, &numbers))
-		return (write(2, "Error", 5), 0);
+		return (write(2, "Error\n", 6), 0);
 	ft_fill_list(&list_a, numbers, data->argc);
 	if (!ft_is_sorted(list_a))
 	{

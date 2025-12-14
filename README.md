@@ -5,6 +5,8 @@ Here is the corrected, complete version. I have restored the separator lines and
 Copy everything inside this code block:
 Markdown
 
+*This project has been created as part of the 42 curriculum by xiribar.*
+
 <div align="left">
 
 <img src="https://github.com/ayogun/42-project-badges/blob/main/badges/push_swapm.png?raw=true" width="150px" alt="Push Swap Badge" style="margin-bottom: 20px;">

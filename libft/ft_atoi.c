@@ -29,9 +29,9 @@ long	ft_atoi(const char *nptr)
 		counter++;
 		nptr++;
 	}
-	if (counter >= 2)
-		return (0);
 	integer = 0;
+	if (counter >= 2)
+		return (INT_MAX);
 	while (ft_isdigit(*nptr))
 	{
 		integer = (integer * 10) + (*nptr - '0');

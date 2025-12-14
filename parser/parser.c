@@ -13,71 +13,30 @@
 #include "../push_swap.h"
 
 /*
-** Helper function to count arguments when they are passed as a single string
-** (e.g., "./push_swap '1 2 3'").
-*/
-int	count_the_words(char **argv)
-{
-	int	counter;
-
-	counter = 0;
-	while (argv[counter])
-		counter++;
-	return (counter);
-}
-
-/*
 ** Validates that all input strings are valid integers. Allocates memory for
 ** the integer array and converts strings using ft_atoi.
 */
-bool	ft_is_number(t_data *data, int **numbers)
+static bool	ft_is_number(t_data *data, int **numbers)
 {
-	int		index;
-	long	temp_value;
+	int		i;
 	int		j;
 
-	index = 1;
+	i = 1;
 	j = 0;
 	if (data->mode)
 	{
-		index = 0;
+		i = 0;
 		data->argc = (count_the_words(data->argv) + 1);
 	}
 	*numbers = malloc(sizeof(int) * (data->argc - 1));
 	if (!*numbers)
 		return (false);
-	while (data->argv[index])
+	while (data->argv[i])
 	{
-		temp_value = ft_atoi(data->argv[index]);
-		if (temp_value <= INT_MIN || temp_value >= INT_MAX)
-			return (false);
-		(*numbers)[j] = temp_value;
+		if (!ft_atol_safe(data->argv[i], &(*numbers)[j]))
+			return (free(*numbers), false);
 		j++;
-		index++;
-	}
-	return (true);
-}
-
-/*
-** Checks the integer array for duplicate numbers. 
-** Push_swap requires unique values.
-*/
-bool	ft_is_duplicate(int **numbers, t_data *data)
-{
-	int		index;
-	int		jndex;
-
-	index = 0;
-	while (index < data->argc - 1)
-	{
-		jndex = index + 1;
-		while (jndex < data->argc - 1)
-		{
-			if ((*numbers)[index] == (*numbers)[jndex])
-				return (false);
-			jndex++;
-		}
-		index++;
+		i++;
 	}
 	return (true);
 }
@@ -95,6 +54,10 @@ bool	ft_parse_input(t_data *data, int **numbers)
 	}
 	if (data->argc == 1 || !ft_is_number(data, numbers)
 		|| !ft_is_duplicate(numbers, data))
+	{
+		if (data->mode == 1)
+			free_split_argv(data->argv);
 		return (free(data), false);
+	}
 	return (true);
 }

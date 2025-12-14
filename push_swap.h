@@ -64,15 +64,20 @@ typedef struct s_data
 /* -------------------------------------------------------------------------- */
 
 bool	ft_parse_input(t_data *data, int **numbers);
+void	free_split_argv(char **argv);
+int		count_the_words(char **argv);
+bool	ft_is_duplicate(int **numbers, t_data *data);
+bool	ft_atol_safe(char *str, int *val);
 
 /* -------------------------------------------------------------------------- */
 /* LIBFT / UTILS                                 */
 /* -------------------------------------------------------------------------- */
 
 int		ft_printf(const char *format, ...);
-long    ft_atoi(const char *nptr);
+long	ft_atoi(const char *nptr);
 char	**ft_split(char const *s, char c);
 char	*ft_strchr(const char *s, int c);
+int		ft_isdigit(int c);
 
 /* -------------------------------------------------------------------------- */
 /* LIST UTILS                                  */
