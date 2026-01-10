@@ -66,7 +66,7 @@ bool	ft_is_sorted(t_list *list)
 int	initialise_data(int argc, char **argv, t_data *data)
 {
 	if (argc < 2)
-		return (0);
+		return (free(data), 0);
 	data->argc = argc;
 	data->argv = argv;
 	data->mode = 0;

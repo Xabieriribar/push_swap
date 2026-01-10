@@ -47,6 +47,8 @@ static bool	ft_is_number(t_data *data, int **numbers)
 */
 bool	ft_parse_input(t_data *data, int **numbers)
 {
+	if (!data->argv[1][0])
+		return (free(data), false);
 	if (data->argc == 2 && ft_strchr(data->argv[1], ' '))
 	{
 		data->argv = ft_split(data->argv[1], ' ');
