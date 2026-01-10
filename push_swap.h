@@ -74,6 +74,7 @@ bool	ft_atol_safe(char *str, int *val);
 /* -------------------------------------------------------------------------- */
 
 int		ft_printf(const char *format, ...);
+char	*ft_strjoin(char const *s1, char const *s2);
 long	ft_atoi(const char *nptr);
 char	**ft_split(char const *s, char c);
 char	*ft_strchr(const char *s, int c);

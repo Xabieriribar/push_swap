@@ -103,9 +103,10 @@ int	main(int argc, char **argv)
 	numbers = NULL;
 	data = malloc(sizeof(struct s_data));
 	if (!data || !initialise_data(argc, argv, data))
-		return (0);
+		return (EXIT_FAILURE);
 	if (!ft_parse_input(data, &numbers))
-		return (write(2, "Error\n", 6), 1);
+		return (write(STDERR_FILENO, "Error\n", 6), 1);
+	// #ifdef 0;
 	ft_fill_list(&list_a, numbers, data->argc);
 	if (!ft_is_sorted(list_a))
 	{
@@ -116,5 +117,6 @@ int	main(int argc, char **argv)
 		if (ft_lstsize(list_a) >= 4)
 			sort_turks(&list_a, &list_b);
 	}
+	// #endif
 	return (free_data(data, numbers, &list_a, &list_b), 0);
 }
