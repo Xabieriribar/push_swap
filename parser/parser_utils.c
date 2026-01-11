@@ -38,16 +38,13 @@ bool	ft_is_duplicate(int **numbers, t_data *data)
 	int		jndex;
 
 	index = 0;
-	while (index < data->argc - 1)
+	while (index < data->argc)
 	{
 		jndex = index + 1;
-		while (jndex < data->argc - 1)
+		while (jndex < data->argc)
 		{
 			if ((*numbers)[index] == (*numbers)[jndex])
-			{
-				free(*numbers);
 				return (false);
-			}
 			jndex++;
 		}
 		index++;
@@ -82,6 +79,6 @@ bool	ft_atol_safe(char *str, int *val)
 	temp = ft_atoi(str);
 	if (temp < INT_MIN || temp > INT_MAX)
 		return (false);
-	*val = (int)temp;
+	*val = temp;
 	return (true);
 }

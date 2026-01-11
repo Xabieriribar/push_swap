@@ -17,8 +17,8 @@
 ** bottom half of their stacks. Uses 'rrr' to rotate both simultaneously,
 ** then finishes with individual rotations.
 */
-void	loop_if_below_median(t_list *smallest_to_push, t_list *target_node,
-	t_list **list_a, t_list **list_b)
+void	loop_if_below_median(t_stack *smallest_to_push, t_stack *target_node,
+	t_stack **list_a, t_stack **list_b)
 {
 	while (smallest_to_push->index != 0 && target_node->index != 0)
 	{
@@ -42,8 +42,8 @@ void	loop_if_below_median(t_list *smallest_to_push, t_list *target_node,
 ** but the target is in the top half (needs RB). 
 ** No simultaneous optimization possible.
 */
-void	high_cost_loop_one(t_list *smallest_to_push, t_list *target_node,
-	t_list **list_a, t_list **list_b)
+void	high_cost_loop_one(t_stack *smallest_to_push, t_stack *target_node,
+	t_stack **list_a, t_stack **list_b)
 {
 	while (smallest_to_push->index != 0)
 	{
@@ -62,8 +62,8 @@ void	high_cost_loop_one(t_list *smallest_to_push, t_list *target_node,
 ** top half of their stacks. Uses 'rr' to rotate both simultaneously,
 ** then finishes with individual rotations.
 */
-void	loop_if_above_median(t_list *smallest_to_push, t_list *target_node,
-	t_list **list_a, t_list **list_b)
+void	loop_if_above_median(t_stack *smallest_to_push, t_stack *target_node,
+	t_stack **list_a, t_stack **list_b)
 {
 	while (smallest_to_push->index != 0 && target_node->index != 0)
 	{
@@ -87,8 +87,8 @@ void	loop_if_above_median(t_list *smallest_to_push, t_list *target_node,
 ** but the target is in the bottom half (needs RRB). 
 ** No simultaneous optimization possible.
 */
-void	high_cost_loop_two(t_list *smallest_to_push, t_list *target_node,
-	t_list **list_a, t_list **list_b)
+void	high_cost_loop_two(t_stack *smallest_to_push, t_stack *target_node,
+	t_stack **list_a, t_stack **list_b)
 {
 	while (smallest_to_push->index != 0)
 	{
@@ -107,7 +107,8 @@ void	high_cost_loop_two(t_list *smallest_to_push, t_list *target_node,
 ** node and its target relative to the median to select the most efficient
 ** rotation strategy (rr, rrr, or mixed) before pushing.
 */
-void	push_to_top(t_list *smallest_to_push, t_list **list_a, t_list **list_b)
+void	push_to_top(t_stack *smallest_to_push,
+	t_stack **list_a, t_stack **list_b)
 {
 	if (calculate_median(*list_a) >= smallest_to_push->index
 		&& calculate_median(*list_b) >= smallest_to_push->target_node->index)

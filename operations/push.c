@@ -15,9 +15,9 @@
 /*
 ** Pushes the top element of stack A to the top of stack B.
 */
-void	pb(t_list **list_a, t_list **list_b, int mode)
+void	pb(t_stack **list_a, t_stack **list_b, int mode)
 {
-	t_list	*temp;
+	t_stack	*temp;
 
 	if (!*list_a)
 		return ;
@@ -36,9 +36,9 @@ void	pb(t_list **list_a, t_list **list_b, int mode)
 /*
 ** Pushes the top element of stack B to the top of stack A.
 */
-void	pa(t_list **list_a, t_list **list_b, int mode)
+void	pa(t_stack **list_a, t_stack **list_b, int mode)
 {
-	t_list	*temp;
+	t_stack	*temp;
 
 	if (!*list_b)
 		return ;

@@ -17,11 +17,11 @@
 ** the correct target position in A is at the top before pushing, maintaining
 ** the sorted order.
 */
-void	from_b_to_a(t_list **list_a, t_list **list_b)
+void	from_b_to_a(t_stack **list_a, t_stack **list_b)
 {
-	t_list	*target_node;
+	t_stack	*target_node;
 
-	while (ft_lstsize(*list_b) > 0)
+	while (stack_size(*list_b) > 0)
 	{
 		target_node = get_target_node(*list_a, *list_b, NEXT_BIGGEST);
 		if (target_node->index == 0)

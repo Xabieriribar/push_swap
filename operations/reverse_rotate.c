@@ -15,15 +15,15 @@
 /*
 ** Reverse Rotate A: The last element becomes the first one.
 */
-void	rra(t_list **list, int mode)
+void	rra(t_stack **list, int mode)
 {
-	t_list	*node;
-	t_list	*prev;
+	t_stack	*node;
+	t_stack	*prev;
 
 	node = *list;
-	prev = ft_lstlast(*list);
+	prev = stack_last(*list);
 	prev = prev->prev;
-	*list = ft_lstlast(*list);
+	*list = stack_last(*list);
 	node->prev = *list;
 	(*list)->next = node;
 	(*list)->prev = NULL;
@@ -35,15 +35,15 @@ void	rra(t_list **list, int mode)
 /*
 ** Reverse Rotate B: The last element becomes the first one.
 */
-void	rrb(t_list **list, int mode)
+void	rrb(t_stack **list, int mode)
 {
-	t_list	*node;
-	t_list	*prev;
+	t_stack	*node;
+	t_stack	*prev;
 
 	node = *list;
-	prev = ft_lstlast(*list);
+	prev = stack_last(*list);
 	prev = prev->prev;
-	*list = ft_lstlast(*list);
+	*list = stack_last(*list);
 	node->prev = *list;
 	(*list)->next = node;
 	(*list)->prev = NULL;
@@ -55,7 +55,7 @@ void	rrb(t_list **list, int mode)
 /*
 ** Simultaneously reverse rotates both stack A and stack B.
 */
-void	rrr(t_list **list_a, t_list **list_b)
+void	rrr(t_stack **list_a, t_stack **list_b)
 {
 	rra(list_a, 0);
 	rrb(list_b, 0);

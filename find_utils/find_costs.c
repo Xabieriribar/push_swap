@@ -51,9 +51,9 @@ int	set_costs(int index_a, int index_target, int len_a, int len_b)
 ** If two nodes have the same cost, it prioritizes the one with the lower index
 ** (closer to the top) to ensure stability.
 */
-t_list	*return_lowest_cost_node(t_list *list_a)
+t_stack	*return_lowest_cost_node(t_stack *list_a)
 {
-	t_list	*lowest_cost_node;
+	t_stack	*lowest_cost_node;
 
 	lowest_cost_node = list_a;
 	while (list_a != NULL)
@@ -73,10 +73,10 @@ t_list	*return_lowest_cost_node(t_list *list_a)
 ** based on its current position and the position of its target in stack B,
 ** then returns the node that is cheapest to move.
 */
-t_list	*find_cost(t_list *list_a, int len_a, int len_b)
+t_stack	*find_cost(t_stack *list_a, int len_a, int len_b)
 {
-	t_list	*target_b;
-	t_list	*head_list;
+	t_stack	*target_b;
+	t_stack	*head_list;
 
 	head_list = list_a;
 	while (list_a != NULL)

@@ -13,41 +13,9 @@
 #include "push_swap.h"
 
 /*
-** Refreshes the `index` attribute for every node in both lists. This must be
-** called after every push or rotation operation to keep positions accurate.
-*/
-void	update_indexes(t_list **list_a, t_list **list_b)
-{
-	t_list	*temp;
-	int		index;
-
-	if (list_a != NULL)
-	{
-		index = 0;
-		temp = *list_a;
-		while (temp != NULL)
-		{
-			temp->index = index;
-			index++;
-			temp = temp->next;
-		}
-	}
-	if (list_b == NULL)
-		return ;
-	temp = *list_b;
-	index = 0;
-	while (temp != NULL)
-	{
-		temp->index = index;
-		index++;
-		temp = temp->next;
-	}
-}
-
-/*
 ** Checks if the list is already sorted in ascending order.
 */
-bool	ft_is_sorted(t_list *list)
+bool	ft_is_sorted(t_stack *list)
 {
 	if (!list)
 		return (true);
@@ -65,8 +33,6 @@ bool	ft_is_sorted(t_list *list)
 */
 int	initialise_data(int argc, char **argv, t_data *data)
 {
-	if (argc < 2)
-		return (free(data), 0);
 	data->argc = argc;
 	data->argv = argv;
 	data->mode = 0;
@@ -77,14 +43,30 @@ int	initialise_data(int argc, char **argv, t_data *data)
 ** Clean-up function to free the main structure, the integer array, and
 ** both linked lists before the program exits.
 */
-void	free_data(t_data *data, int *nbr, t_list **list_a, t_list **list_b)
+void	free_data(t_data *data, int *nbr, t_stack **list_a, t_stack **list_b)
 {
 	if (data && data->mode == 1)
 		free_split_argv(data->argv);
 	free(data);
 	free(nbr);
-	ft_lstclear(list_a);
-	ft_lstclear(list_b);
+	stack_clear(list_a);
+	stack_clear(list_b);
+}
+
+/*
+** Helper to select the appropriate sorting strategy based on stack size.
+*/
+static void	handle_sorting(t_stack **list_a, t_stack **list_b)
+{
+	int	size;
+
+	size = stack_size(*list_a);
+	if (size == 2)
+		sort_two(list_a);
+	else if (size == 3)
+		sort_three(list_a);
+	else if (size >= 4)
+		sort_turks(list_a, list_b);
 }
 
 /*
@@ -94,29 +76,26 @@ void	free_data(t_data *data, int *nbr, t_list **list_a, t_list **list_b)
 int	main(int argc, char **argv)
 {
 	int			*numbers;
-	t_list		*list_a;
-	t_list		*list_b;
+	t_stack		*list_a;
+	t_stack		*list_b;
 	t_data		*data;
 
+	if (argc < 2)
+		return (0);
 	list_a = NULL;
 	list_b = NULL;
 	numbers = NULL;
 	data = malloc(sizeof(struct s_data));
-	if (!data || !initialise_data(argc, argv, data))
+	if (!data)
 		return (EXIT_FAILURE);
+	initialise_data(argc, argv, data);
 	if (!ft_parse_input(data, &numbers))
-		return (write(STDERR_FILENO, "Error\n", 6), 1);
-	// #ifdef 0;
-	ft_fill_list(&list_a, numbers, data->argc);
-	if (!ft_is_sorted(list_a))
 	{
-		if (ft_lstsize(list_a) == 2)
-			sort_two(&list_a);
-		if (ft_lstsize(list_a) == 3)
-			sort_three(&list_a);
-		if (ft_lstsize(list_a) >= 4)
-			sort_turks(&list_a, &list_b);
+		free_data(data, numbers, &list_a, &list_b);
+		return (write(2, "Error\n", 6), 1);
 	}
-	// #endif
+	stack_fill(&list_a, numbers, data->argc);
+	if (list_a && !ft_is_sorted(list_a))
+		handle_sorting(&list_a, &list_b);
 	return (free_data(data, numbers, &list_a, &list_b), 0);
 }

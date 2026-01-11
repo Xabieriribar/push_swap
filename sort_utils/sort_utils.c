@@ -16,7 +16,7 @@
 ** Helper check for sort_three logic: 
 ** checks if the last node is the largest value.
 */
-bool	last_is_biggest(t_list *list, t_list *last)
+bool	last_is_biggest(t_stack *list, t_stack *last)
 {
 	while (list->next != NULL)
 	{
@@ -30,7 +30,7 @@ bool	last_is_biggest(t_list *list, t_list *last)
 /*
 ** Checks if the first two elements are unordered and swaps them if necessary.
 */
-bool	swap_two(t_list **list)
+bool	swap_two(t_stack **list)
 {
 	if ((*list)->number > (*list)->next->number)
 	{
@@ -43,10 +43,10 @@ bool	swap_two(t_list **list)
 /*
 ** Locates the index (position) of the largest number in the list.
 */
-void	find_biggest_index(t_list *list, int *index)
+void	find_biggest_index(t_stack *list, int *index)
 {
 	int		max;
-	t_list	*max_node;
+	t_stack	*max_node;
 
 	max = list->number;
 	max_node = NULL;
@@ -66,7 +66,7 @@ void	find_biggest_index(t_list *list, int *index)
 ** Rotates the list to place the largest number at the bottom, which simplifies
 ** the sorting of the remaining two top elements.
 */
-void	put_biggest_in_bottom(t_list **list)
+void	put_biggest_in_bottom(t_stack **list)
 {
 	int	index;
 
@@ -88,31 +88,25 @@ void	put_biggest_in_bottom(t_list **list)
 ** Final adjustment step: Rotates stack A until the smallest number is at the
 ** head of the list, ensuring the stack is perfectly sorted (e.g., 1 2 3 4 5).
 */
-void	sort_smallest(t_list **list_a)
+void	sort_smallest(t_stack **list_a)
 {
-	t_list	*temp_a;
-	t_list	*smallest;
+	t_stack	*smallest;
 
-	temp_a = *list_a;
-	while (temp_a != NULL)
+	smallest = find_smallest(*list_a);
+	if (calculate_median(*list_a) > smallest->index)
 	{
-		smallest = find_smallest(*list_a);
-		if (calculate_median(*list_a) > smallest->index)
+		while (smallest->index != 0)
 		{
-			while (smallest->index != 0)
-			{
-				ra(list_a, PRINT_IT);
-				update_indexes(list_a, NULL);
-			}
+			ra(list_a, PRINT_IT);
+			update_indexes(list_a, NULL);
 		}
-		else
+	}
+	else
+	{
+		while (smallest->index != 0)
 		{
-			while (smallest->index != 0)
-			{
-				rra(list_a, PRINT_IT);
-				update_indexes(list_a, NULL);
-			}
+			rra(list_a, PRINT_IT);
+			update_indexes(list_a, NULL);
 		}
-		temp_a = temp_a->next;
 	}
 }

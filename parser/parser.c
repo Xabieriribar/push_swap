@@ -23,15 +23,13 @@ static bool	ft_is_number(t_data *data, int **numbers)
 
 	i = 0;
 	j = 0;
-	*numbers = malloc(sizeof(int) * (data->argc - 1));
+	*numbers = malloc(sizeof(int) * (data->argc));
 	if (!*numbers)
 		return (false);
 	while (data->argv[i])
 	{
-		printf("este es el problema? %c\n", data->argv[i][0]);
 		if (!ft_atol_safe(data->argv[i], &(*numbers)[j]))
-			return (free(*numbers), false);
-		printf("value of i %d", i);
+			return (false);
 		j++;
 		i++;
 	}
@@ -44,27 +42,28 @@ static bool	ft_is_number(t_data *data, int **numbers)
 */
 bool	ft_parse_input(t_data *data, int **numbers)
 {
-	int	i;
-	
-	i = 2;
-	if (!data->argv[1][0] || data->argv[1][0] - 0 == 32)
-		return (free(data), false);
+	int		i;
+	char	*temp;
+	char	*joined;
 
+	i = 1;
+	joined = ft_strdup("");
 	while (i < data->argc)
 	{
-		if (i == 2)
-			data->argv[1] = ft_strjoin(data->argv[1], " ");
-		data->argv[1] = ft_strjoin(data->argv[1], data->argv[i]);
+		temp = ft_strjoin(joined, data->argv[i]);
+		free(joined);
+		joined = ft_strjoin(temp, " ");
+		free(temp);
 		i++;
 	}
-	i = 0;
-	printf("%s", data->argv[1]);
-	if (data->argc == 1 || !ft_is_number(data, numbers)
+	data->argv = ft_split(joined, ' ');
+	free(joined);
+	if (!data->argv)
+		return (false);
+	data->mode = 1;
+	data->argc = count_the_words(data->argv);
+	if (data->argc == 0 || !ft_is_number(data, numbers)
 		|| !ft_is_duplicate(numbers, data))
-	{
-		if (data->mode == 1)
-			free_split_argv(data->argv);
-		return (free(data), false);
-	}
+		return (false);
 	return (true);
 }

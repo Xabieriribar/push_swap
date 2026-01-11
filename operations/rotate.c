@@ -15,13 +15,13 @@
 /*
 ** Rotate A: The first element becomes the last one.
 */
-void	ra(t_list **list, int mode)
+void	ra(t_stack **list, int mode)
 {
-	t_list	*first_temp;
-	t_list	*last_temp;
+	t_stack	*first_temp;
+	t_stack	*last_temp;
 
 	first_temp = (*list);
-	last_temp = ft_lstlast(*list);
+	last_temp = stack_last(*list);
 	*list = (*list)->next;
 	last_temp->next = first_temp;
 	first_temp->prev = last_temp;
@@ -33,13 +33,13 @@ void	ra(t_list **list, int mode)
 /*
 ** Rotate B: The first element becomes the last one.
 */
-void	rb(t_list **list, int mode)
+void	rb(t_stack **list, int mode)
 {
-	t_list	*first_temp;
-	t_list	*last_temp;
+	t_stack	*first_temp;
+	t_stack	*last_temp;
 
 	first_temp = (*list);
-	last_temp = ft_lstlast(*list);
+	last_temp = stack_last(*list);
 	*list = (*list)->next;
 	last_temp->next = first_temp;
 	first_temp->prev = last_temp;
@@ -51,7 +51,7 @@ void	rb(t_list **list, int mode)
 /*
 ** Simultaneously rotates both stack A and stack B.
 */
-void	rr(t_list **list_a, t_list **list_b)
+void	rr(t_stack **list_a, t_stack **list_b)
 {
 	ra(list_a, 0);
 	rb(list_b, 0);

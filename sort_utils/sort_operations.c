@@ -15,7 +15,7 @@
 /*
 ** Simple swap to sort two elements.
 */
-void	sort_two(t_list **list)
+void	sort_two(t_stack **list)
 {
 	sa(list, PRINT_IT);
 }
@@ -24,16 +24,17 @@ void	sort_two(t_list **list)
 ** Sorts three elements using the minimal number of moves (max 2 operations).
 ** Checks specific permutations to decide whether to swap or rotate.
 */
-void	sort_three(t_list **list)
+void	sort_three(t_stack **list)
 {
-	t_list	*last;
+	t_stack	*last;
 
-	last = ft_lstlast(*list);
+	last = stack_last(*list);
 	if (last_is_biggest(*list, last) && swap_two(list))
 		return ;
 	else
 	{
 		put_biggest_in_bottom(list);
+		update_indexes(list, NULL);
 		if (!ft_is_sorted(*list))
 			sa(list, PRINT_IT);
 	}
@@ -46,11 +47,11 @@ void	sort_three(t_list **list)
 ** 3. Push B back to A.
 ** 4. Final rotation to ensure the smallest number is at the start.
 */
-void	sort_turks(t_list **list_a, t_list **list_b)
+void	sort_turks(t_stack **list_a, t_stack **list_b)
 {
-	if (ft_lstsize(*list_a) > 5)
+	if (stack_size(*list_a) > 5)
 		from_a_to_b(list_a, list_b);
-	while (ft_lstsize(*list_a) > 3)
+	while (stack_size(*list_a) > 3)
 		pb (list_a, list_b, PRINT_IT);
 	update_indexes(list_a, list_b);
 	if (!ft_is_sorted(*list_a))

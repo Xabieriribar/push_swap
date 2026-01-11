@@ -16,7 +16,7 @@
 ** Wrapper function that retrieves either the next biggest or next smallest node
 ** depending on the direction of the push (A to B or B to A).
 */
-t_list	*get_target_node(t_list *list, t_list *source_node, int to_find)
+t_stack	*get_target_node(t_stack *list, t_stack *source_node, int to_find)
 {
 	int	source_number;
 
@@ -32,8 +32,8 @@ t_list	*get_target_node(t_list *list, t_list *source_node, int to_find)
 ** Checks where the target node is located (above or below median) and rotates
 ** the destination stack to bring the target to the top (index 0).
 */
-void	is_target_below_or_above(t_list *target_node, t_list **list_a,
-	t_list **list_b, int print)
+void	is_target_below_or_above(t_stack *target_node, t_stack **list_a,
+	t_stack **list_b, int print)
 {
 	if (calculate_median(*list_a) >= target_node->index)
 	{
@@ -61,10 +61,10 @@ void	is_target_below_or_above(t_list *target_node, t_list **list_a,
 ** Iterates through every node in stack A and finds its correct target position
 ** in stack B, storing the pointer to that target in the node structure.
 */
-void	assign_target_nodes_to_a(t_list **list_a, t_list **list_b)
+void	assign_target_nodes_to_a(t_stack **list_a, t_stack **list_b)
 {
-	t_list	*target_nodes;
-	t_list	*temp_a;
+	t_stack	*target_nodes;
+	t_stack	*temp_a;
 
 	temp_a = *list_a;
 	while (temp_a != NULL)
@@ -72,5 +72,37 @@ void	assign_target_nodes_to_a(t_list **list_a, t_list **list_b)
 		target_nodes = get_target_node(*list_b, temp_a, NEXT_SMALLEST);
 		temp_a->target_node = target_nodes;
 		temp_a = temp_a->next;
+	}
+}
+
+/*
+** Refreshes the `index` attribute for every node in both lists. This must be
+** called after every push or rotation operation to keep positions accurate.
+*/
+void	update_indexes(t_stack **list_a, t_stack **list_b)
+{
+	t_stack	*temp;
+	int		index;
+
+	if (list_a != NULL)
+	{
+		index = 0;
+		temp = *list_a;
+		while (temp != NULL)
+		{
+			temp->index = index;
+			index++;
+			temp = temp->next;
+		}
+	}
+	if (list_b == NULL || *list_b == NULL)
+		return ;
+	temp = *list_b;
+	index = 0;
+	while (temp != NULL)
+	{
+		temp->index = index;
+		index++;
+		temp = temp->next;
 	}
 }

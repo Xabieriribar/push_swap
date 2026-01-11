@@ -16,9 +16,9 @@
 ** Traverses the provided list to find and return the node containing the
 ** highest integer value.
 */
-t_list	*find_biggest(t_list *list)
+t_stack	*find_biggest(t_stack *list)
 {
-	t_list	*biggest;
+	t_stack	*biggest;
 
 	biggest = list;
 	while (list != NULL)
@@ -34,9 +34,9 @@ t_list	*find_biggest(t_list *list)
 ** Traverses the provided list to find and return the node containing the
 ** lowest integer value.
 */
-t_list	*find_smallest(t_list *list)
+t_stack	*find_smallest(t_stack *list)
 {
-	t_list	*smallest;
+	t_stack	*smallest;
 
 	smallest = list;
 	while (list != NULL)
@@ -55,11 +55,11 @@ t_list	*find_smallest(t_list *list)
 ** should land in A.
 ** If no bigger number exists, it returns the smallest node in A (cyclic order).
 */
-t_list	*find_next_biggest(t_list *list_a, int source_number)
+t_stack	*find_next_biggest(t_stack *list_a, int source_number)
 {
-	t_list	*biggest;
-	t_list	*smallest;
-	t_list	*candidate;
+	t_stack	*biggest;
+	t_stack	*smallest;
+	t_stack	*candidate;
 	int		mode;
 
 	biggest = find_biggest(list_a);
@@ -88,11 +88,11 @@ t_list	*find_next_biggest(t_list *list_a, int source_number)
 ** position in B for a node being pushed from A.
 ** If no smaller number exists, it returns the biggest node in B (cyclic order).
 */
-t_list	*find_next_smallest(t_list *list_b, int source_number)
+t_stack	*find_next_smallest(t_stack *list_b, int source_number)
 {
-	t_list	*biggest;
-	t_list	*smallest;
-	t_list	*candidate;
+	t_stack	*biggest;
+	t_stack	*smallest;
+	t_stack	*candidate;
 	int		mode;
 
 	biggest = find_biggest(list_b);
@@ -120,16 +120,16 @@ t_list	*find_next_smallest(t_list *list_b, int source_number)
 ** more efficient to rotate up (RA/RB) 
 ** or reverse rotate down (RRA/RRB) to reach a node.
 */
-int	calculate_median(t_list *list_a)
+int	calculate_median(t_stack *list_a)
 {
 	int	median;
 
 	median = 0;
-	if (ft_lstsize(list_a) % 2 == 0)
+	if (stack_size(list_a) % 2 == 0)
 	{
-		median = ft_lstsize(list_a) / 2;
+		median = stack_size(list_a) / 2;
 	}
 	else
-		median = (ft_lstsize(list_a) / 2) + 1;
+		median = (stack_size(list_a) / 2) + 1;
 	return (median);
 }

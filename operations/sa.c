@@ -14,7 +14,7 @@
 
 /*This function adds element to the b stack, starting from the bottom
 and adding them always at the top*/
-void	sa(t_list **list, int mode)
+void	sa(t_stack **list, int mode)
 {
 	int	temp_number;
 	int	temp_index;
