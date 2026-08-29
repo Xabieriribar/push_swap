@@ -1,78 +1,59 @@
-*This project has been created as part of the 42 curriculum by xiribar.*
+*This project was created as part of the 42 curriculum by xiribar.*
 
 ![Push Swap Badge](https://github.com/ayogun/42-project-badges/blob/main/badges/push_swapm.png?raw=true)
 
-# PUSH_SWAP: ALGORITHMIC SORTING ENGINE
-*42 Lausanne, Switzerland*
+# Push Swap
 
-## 01. ABOUT
-This project is a deep dive into algorithmic complexity and stack manipulation. The goal is simple: sort a random set of integers using two stacks (**Stack A** and **Stack B**) and a specific set of operations. The challenge lies in the constraint: minimizing the number of instructions.
+Push Swap is an algorithmic sorting project written in C. The program sorts integers with two stacks and a restricted set of operations while minimizing the number of emitted instructions.
 
-I implemented the **Turk Algorithm** (Mechanical Turk). Instead of recursive methods like QuickSort, this is a greedy algorithm that calculates the "cheapest" move for every node at every step, ensuring highly optimized operation counts for large datasets.
+## Approach
 
-## 02. THE LOGIC
+I implemented a cost-based Turk algorithm:
 
-### PHASE 1: PARTITIONING
-*   **Push to B:** Move all nodes from A to B, leaving only 3 elements.
-*   **Pre-sorting:** While pushing, I check median values. If a node is smaller than the median, I rotate B to place it at the bottom.
-*   **Tiny Sort:** Instantly sort the remaining 3 numbers in Stack A.
+1. Move values from stack A to stack B while preserving useful ordering.
+2. Sort the final three values in A.
+3. Calculate the insertion target and movement cost for every value in B.
+4. Select the cheapest move.
+5. Combine rotations with rr or rrr whenever possible.
+6. Rotate the minimum value to the top of A.
 
-### PHASE 2: MECHANICAL TURK
-*   **Cost Calculation:** For every node in B, I calculate the moves required to put it in position in A.
-*   **Cheapest Move:** I select the node with the absolute lowest cost.
-*   **Simultaneous Rotation:** I utilize `rr` and `rrr` to move both stacks at once, saving instructions.
+This approach turns the problem into repeated local optimization while keeping operation counts within the project's performance constraints.
 
-## 03. TECHNOLOGY STACK
+## Performance
 
-!C
-!Makefile
-!Bash
-!Git
+| Input size | Project threshold | Typical result |
+|---:|---:|---:|
+| 3 | fewer than 3 operations | 1–2 |
+| 5 | fewer than 12 operations | about 9 |
+| 100 | fewer than 700 operations | about 580 |
+| 500 | fewer than 5,500 operations | about 4,800 |
 
-## 04. PERFORMANCE METRICS
+Results vary with the input permutation.
 
-| Stack Size | Constraint (Max Ops) | My Algorithm (Avg Ops) |
-| :--- | :--- | :--- |
-| **3 Numbers** | < 3 | **1-2** (Hardcoded) |
-| **5 Numbers** | < 12 | **9** (Average) |
-| **100 Numbers** | < 700 | **~580** |
-| **500 Numbers** | < 5500 | **~4800** |
+## Build and use
 
-## 05. USAGE
-
-### 1. Clone and Compile
-
-```bash
-git clone git@github.com:Xabieriribar/push_swap.git
-cd push_swap
+~~~bash
 make
-```
-
-### 2. Run with Integers
-
-```bash
 ./push_swap 4 67 3 87 23
-```
+~~~
 
-### 3. Check Operations Count
+Count the generated operations:
 
-```bash
-ARG="4 67 3 87 23"; ./push_swap $ARG | wc -l
-```
+~~~bash
+ARG="4 67 3 87 23"
+./push_swap $ARG | wc -l
+~~~
 
-## 06. FILE STRUCTURE
-> *The project follows a strict 42-Norminette compliant structure, separating operations, sorting logic, and parsing utilities.*
+## What this project demonstrates
 
-## 07. RESOURCES & AI USAGE
-*   **Resources:**
-    *   [Push Swap Tutorial](https://medium.com/@ayogun/push-swap-c1f5d2d41e97) - Understanding the basics.
-*   **AI Usage:**
-    *   AI assisted in generating the tester script (`full_tester.sh`).
+- Algorithmic reasoning under a constrained instruction set
+- Linked-list and stack manipulation in C
+- Input validation and edge-case handling
+- Cost modeling and operation optimization
+- Memory management and automated testing
 
-## 08. CONTACT
+AI assisted with the tester script. The sorting implementation was reviewed and tested manually against the project requirements.
 
-[!LinkedIn](https://ch.linkedin.com/in/xabier-iribar-revuelta-b85b09320)
-[!Portfolio](https://xabieriribar.com)
-[!Email](mailto:xabieriribarrevuelta@gmail.com)
+## Contact
 
-© 2024 Xabier Iribar Revuelta. All Rights Reserved.
+[LinkedIn](https://ch.linkedin.com/in/xabier-iribar-revuelta-b85b09320) · [Portfolio](https://xabieriribar.com)
